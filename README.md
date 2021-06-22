@@ -36,19 +36,19 @@ Its main features are:
 
 ## Screenshots
 <div display: "inline-block">
-<img src="screenshots/npm_login.PNG" width="300">
-<img src="screenshots/npm_edit_doctor.PNG" width="300">
-<img src="screenshots/npm_doctor_holiday.PNG" width="300">
+<img src="screenshots/npm_login.PNG" width="250">
+<img src="screenshots/npm_edit_doctor.PNG" width="250">
+<img src="screenshots/npm_doctor_holiday.PNG" width="250">
 </div>
 <div display: "inline-block">
-<img src="screenshots/npm_appointments.PNG" width="300">
-<img src="screenshots/npm_appointment.PNG" width="300">
-<img src="screenshots/npm_edit_appointment.PNG" width="300">
+<img src="screenshots/npm_appointments.PNG" width="250">
+<img src="screenshots/npm_appointment.PNG" width="250">
+<img src="screenshots/npm_edit_appointment.PNG" width="250">
 </div>
 <div display: "inline-block">
-<img src="screenshots/npm_patients.PNG" width="300">
-<img src="screenshots/npm_patient.PNG" width="300">
-<img src="screenshots/npm_edit_patient.PNG" width="300">
+<img src="screenshots/npm_patients.PNG" width="250">
+<img src="screenshots/npm_patient.PNG" width="250">
+<img src="screenshots/npm_edit_patient.PNG" width="250">
 </div>
 
 
