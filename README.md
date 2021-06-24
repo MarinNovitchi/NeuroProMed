@@ -59,12 +59,12 @@ Furthermore, the ApiHandler.baseURL string must be changed to a correct app serv
 
 ## Credit and mentions
 During the implementation of this app the following sources were consulted:
-- [Hacking with Swift](https://www.hackingwithswift.com/quick-start/swiftui) **Paul Hudson**'s numerous tutorials and examples
+- [Hacking with Swift](https://www.hackingwithswift.com/quick-start/swiftui) **Paul Hudson**'s tutorials and examples
 
 - [Add Event to Calendar iOS Tutorial](https://www.ioscreator.com/tutorials/add-event-calendar-ios-tutorial) article by Arthur Knopper
 - [App localization Tips with Swift](https://medium.com/@marcosantadev/app-localization-tips-with-swift-4e9b2d9672c9) article by Marco Santarossa
 - [Animating gradients in SwiftUI](https://nerdyak.tech/development/2019/09/30/animating-gradients-swiftui.html) article by Pavel Zak
-- [Gradient as foreground color of Text in SwiftUI](https://stackoverflow.com/questions/58991311/gradient-as-foreground-color-of-text-in-swiftui)Rohit Makwana's answer
+- [Gradient as foreground color of Text in SwiftUI](https://stackoverflow.com/questions/58991311/gradient-as-foreground-color-of-text-in-swiftui) Rohit Makwana's answer
 - [SwiftUI - Open a specific View when user opens a Push Notification](https://stackoverflow.com/questions/66283978/swiftui-open-a-specific-view-when-user-opens-a-push-notification) jnpdx's answer
 
 
