@@ -55,7 +55,7 @@ struct PatientView: View {
                 showSorting: false,
                 useTracking: false
             )
-            PatientDeleteButton(patients: patients, patient: patient)
+            PatientDeleteButton(appointments: appointments, patients: patients, patient: patient)
         }
         .navigationBarTitle(Text(patient.title), displayMode: .inline)
         .navigationBarItems(trailing:

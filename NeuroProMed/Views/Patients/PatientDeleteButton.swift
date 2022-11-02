@@ -11,6 +11,7 @@ struct PatientDeleteButton: View {
     
     @Environment(\.presentationMode) var presentationMode
     
+    @ObservedObject var appointments: Appointments
     @ObservedObject var patients: Patients
     
     @ObservedObject var patient: Patient
@@ -25,6 +26,7 @@ struct PatientDeleteButton: View {
                 let generator = UINotificationFeedbackGenerator()
                 generator.notificationOccurred(.success)
                 patients.patients.removeAll(where: { $0.patientID == patient.patientID })
+                appointments.appointments.removeAll(where: { $0.patientID == patient.patientID } )
                 presentationMode.wrappedValue.dismiss()
             case .failure(let error):
                 alertMessage = error.getMessage()
@@ -52,6 +54,6 @@ struct PatientDeleteButton: View {
 
 struct PatientDeleteButton_Previews: PreviewProvider {
     static var previews: some View {
-        PatientDeleteButton(patients: Patients(), patient: Patient(using: Patient.example))
+        PatientDeleteButton(appointments: Appointments(), patients: Patients(), patient: Patient(using: Patient.example))
     }
 }

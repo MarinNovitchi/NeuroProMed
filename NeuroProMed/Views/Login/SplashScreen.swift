@@ -41,6 +41,15 @@ struct SplashScreen: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 300, height: 300)
+                .gradientForeground(
+                    start: UnitPoint(x: CGFloat(gradientVariable - 2), y: 0),
+                    end: UnitPoint(x: CGFloat(gradientVariable), y: 0),
+                    colors: gradientColorsArray)
+                .animation(
+                    Animation.default
+                        .speed(0.02)
+                        .repeatForever(autoreverses: false)
+                )
                 .shadow(color: .white, radius: 250, x: 0, y: 0)
                 .padding()
             Spacer()
