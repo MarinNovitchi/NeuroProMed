@@ -60,16 +60,6 @@ struct AppointmentView: View {
                 AppointmentDetail(prefix: Text(label(.on_prefix)), detail: Text(appointment.appointmentDate, style: .date))
                 AppointmentDetail(prefix: Text(label(.at_prefix)), detail: Text(appointment.appointmentDate, style: .time))
             }
-            if let investigation = appointment.investigation {
-                CustomSection(header: Text(label(.investigation))) {
-                    Text(investigation)
-                }
-            }
-            if let diagnosis = appointment.diagnosis {
-                CustomSection(header: Text(label(.diagnosis))) {
-                    Text(diagnosis)
-                }
-            }
             if filteredServices.count > 0 {
                 CustomSection(header: Text(label(.serviceBill))) {
                     DisclosureGroup(String(format: label(.totalAmount), filteredServices.reduce(0, { $0 + $1.price })), isExpanded: $isServicesExpanded) {

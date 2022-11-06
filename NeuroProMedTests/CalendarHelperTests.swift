@@ -20,7 +20,7 @@ class CalendarHelperTests: XCTestCase {
         
         // Given
         let appointmentDate = Date().setToMidDayGMT()
-        let givenAppointment = Appointment(appointmentDate: Date().setToMidDayGMT(), doctorID: UUID(), investigation: nil, diagnosis: nil, patientID: UUID(), services: [UUID]())
+        let givenAppointment = Appointment(appointmentDate: Date().setToMidDayGMT(), doctorID: UUID(), patientID: UUID(), services: [UUID]())
         let selectedCalendar = "Calendar"
         
         // When
@@ -41,7 +41,7 @@ class CalendarHelperTests: XCTestCase {
         let formerAppointmentDate = Date().setToMidDayGMT()
         let latterAppointmentDate = formerAppointmentDate.addingTimeInterval(3600 * 24).setToMidDayGMT()
         
-        let givenAppointment = Appointment(appointmentDate: formerAppointmentDate, doctorID: UUID(), investigation: nil, diagnosis: nil, patientID: UUID(), services: [UUID]())
+        let givenAppointment = Appointment(appointmentDate: formerAppointmentDate, doctorID: UUID(), patientID: UUID(), services: [UUID]())
         let selectedCalendar = "Calendar"
         
         // When
@@ -62,7 +62,7 @@ class CalendarHelperTests: XCTestCase {
     func testDelete() {
         
         // Given
-        let givenAppointment = Appointment(appointmentDate: Date().setToMidDayGMT(), doctorID: UUID(), investigation: nil, diagnosis: nil, patientID: UUID(), services: [UUID]())
+        let givenAppointment = Appointment(appointmentDate: Date().setToMidDayGMT(), doctorID: UUID(), patientID: UUID(), services: [UUID]())
         let formerCalendar = "Calendar"
         let latterCalendar = NSLocalizedString("notificationNone", comment: "Notification Schedule - None")
         

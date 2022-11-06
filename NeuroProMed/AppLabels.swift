@@ -64,8 +64,6 @@ enum AppLabels: String {
     case addToCalendar = "Add to Calendar"
     case alertSetToX = "Notification alert text"
     case appointmentSavedToCalendarName = "Appointment Saved to (Calendar Name)"
-    case investigation = "Investigation section header"
-    case diagnosis = "Diagnosis section header"
     case serviceBill = "Service bill section header"
     case totalAmount = "Total for service"
     case for_prefix = "(appointment) For (a patient)"

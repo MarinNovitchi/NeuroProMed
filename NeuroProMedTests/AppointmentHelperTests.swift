@@ -31,10 +31,10 @@ class AppointmentHelperTests: XCTestCase {
         }
         
         let givenAppointmentsArray = [
-            Appointment(appointmentDate: appointmentDate1, doctorID: givenDoctor.doctorID, investigation: nil, diagnosis: nil, patientID: patientID, services: [UUID]()),
-            Appointment(appointmentDate: appointmentDate2, doctorID: givenDoctor.doctorID, investigation: nil, diagnosis: nil, patientID: patientID, services: [UUID]()),
-            Appointment(appointmentDate: appointmentDate3, doctorID: givenDoctor.doctorID, investigation: nil, diagnosis: nil, patientID: patientID, services: [UUID]()),
-            Appointment(appointmentDate: appointmentDate4, doctorID: UUID(), investigation: nil, diagnosis: nil, patientID: patientID, services: [UUID]()), // for another doctor
+            Appointment(appointmentDate: appointmentDate1, doctorID: givenDoctor.doctorID, patientID: patientID, services: [UUID]()),
+            Appointment(appointmentDate: appointmentDate2, doctorID: givenDoctor.doctorID, patientID: patientID, services: [UUID]()),
+            Appointment(appointmentDate: appointmentDate3, doctorID: givenDoctor.doctorID, patientID: patientID, services: [UUID]()),
+            Appointment(appointmentDate: appointmentDate4, doctorID: UUID(), patientID: patientID, services: [UUID]()), // for another doctor
         ]
         
         // When

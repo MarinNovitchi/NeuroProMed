@@ -74,14 +74,6 @@ struct AppointmentFormGroup: View {
                     ServiceToggle(appointment: $appointmentData, service: service)
                 }
             }
-            if isUserDoctor {
-                CustomSection(header: Text(label(.investigation))) {
-                    TextEditor(text: $appointmentData.investigation)
-                }
-                CustomSection(header: Text(label(.diagnosis))) {
-                    TextEditor(text: $appointmentData.diagnosis)
-                }
-            }
             if !isUsedByFilter {
                 NotificationAndCalendarPickers(notificationSchedule: $notificationSchedule, selectedCalendar: $selectedCalendar)
             }
