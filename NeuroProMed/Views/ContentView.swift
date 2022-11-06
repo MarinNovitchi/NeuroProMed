@@ -52,7 +52,18 @@ struct ContentView: View {
                 }
 
             } else {
-                LoginView(isAuthenticated: $isAuthenticated, isUserDoctor: $isUserDoctor, userID: $userID)
+                VStack {
+                    LoginView(isAuthenticated: $isAuthenticated, isUserDoctor: $isUserDoctor, userID: $userID)
+                    Button("Developer unlock: PATIENT") {
+                        userID = UUID(uuidString: "BFF5ABB3-1AA4-4821-89E7-68DF30D5B98D")!
+                        isAuthenticated = true
+                    }
+                    Button("Developer unlock: DOCTOR") {
+                        userID = UUID(uuidString: "9B1DEB4D-3B7D-4BAD-9BDD-2B0D7B3DCB69")!
+                        isUserDoctor = true
+                        isAuthenticated = true
+                    }
+                }
             }
         }
         .onAppear(perform: loadView)

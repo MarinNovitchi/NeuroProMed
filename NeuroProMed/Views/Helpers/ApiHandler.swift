@@ -11,7 +11,7 @@ import SwiftUI
 /// struct used to call the API
 struct ApiHandler {
     
-    private static let baseURL = "http://192.168.100.4:8081"
+    private static let baseURL = "https://neuropromed.com"//"http: //192.168.100.4:8081"
     
     /// Creates an API request
     /// - Parameters:
