@@ -111,8 +111,8 @@ extension Doctor {
 //        ApiHandler.request(.POST, at: "/adddoctor", body: self, completion: completion)
 //    }
     
-    func update(completion: @escaping (Result<ApiResponse, NetworkError>) -> Void) {
-        ApiHandler.request(.POST, at: "/editdoctor", body: self, completion: completion)
+    func update() async throws -> ApiResponse {
+        try await ApiHandler.request(.POST, at: "/editdoctor", body: self)
     }
     
 }
@@ -126,8 +126,8 @@ class Doctors: ObservableObject {
     
     @Published var doctors: [Doctor]
     
-    func load(completion: @escaping (Result<[Doctor], NetworkError>) -> Void) {
-        ApiHandler.request(.GET, at: "/doctors", body: self.doctors, completion: completion)
+    func load() async throws -> [Doctor] {
+        try await ApiHandler.request(.GET, at: "/doctors", body: doctors)
     }
     
 }

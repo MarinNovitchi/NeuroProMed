@@ -32,8 +32,7 @@ class Services: Codable, ObservableObject {
     
     var services: [Service]
     
-    func load(completion: @escaping (Result<[Service], NetworkError>) -> Void) {
-        ApiHandler.request(.GET, at: "/services", body: self, completion: completion)
+    func load() async throws -> [Service] {
+        try await ApiHandler.request(.GET, at: "/services", body: self)
     }
-    
 }
