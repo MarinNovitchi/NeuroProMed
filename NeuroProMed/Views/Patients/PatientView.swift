@@ -7,79 +7,72 @@
 
 import SwiftUI
 
-struct PatientView: View {
+extension PatientView {
     
-    @ObservedObject var appointments: Appointments
-    @ObservedObject var doctors: Doctors
-    @ObservedObject var patients: Patients
-    @ObservedObject var services: Services
-    
-    @ObservedObject var patient: Patient
-    
-    @Binding var userID: UUID
-    
-    let isUserDoctor: Bool
-    
-    
-    @State private var patientData: Patient.PatientProperties = Patient.PatientProperties()
-    @State private var appointmentData = Appointment.AppointmentProperties()
-    
-    @State var activeSheet: ActiveSheet?
+    class ViewModel: ObservableObject {
+        
+        @Published var patientData: Patient.PatientProperties = Patient.PatientProperties()
+        @Published var appointmentData = Appointment.AppointmentProperties()
+        
+        @Published var activeSheet: ActiveSheet?
 
-    enum ActiveSheet: Identifiable {
-        case editPatientSheet, createAppointmentSheet
-        var id: Int {
-            hashValue
+        enum ActiveSheet: Identifiable {
+            case editPatientSheet, createAppointmentSheet
+            var id: Int {
+                hashValue
+            }
+        }
+        
+        func createAppointment(for patient: Patient) {
+            appointmentData.patientID = patient.patientID
+            appointmentData.doctorID = AppState.shared.userID
+            activeSheet = .createAppointmentSheet
         }
     }
+}
+
+struct PatientView: View {
     
-    func createAppointment() {
-        appointmentData.patientID = patient.patientID
-        appointmentData.doctorID = userID
-        activeSheet = .createAppointmentSheet
-    }
-    
+    @ObservedObject var patient: Patient
+    @StateObject var viewModel: ViewModel
     
     var body: some View {
         List {
             PatientDetails(patient: patient)
-            ListButton(title: label(.createAppointment), action: createAppointment)
+            ListButton(title: label(.createAppointment)) {
+                viewModel.createAppointment(for: patient)
+            }
             AppointmentSections(
-                appointments: appointments,
-                doctors: doctors,
-                patients: patients,
-                services: services,
-                userID: Binding<UUID>( get: { patient.patientID }, set: { newValue in }),
-                isUserDoctor: isUserDoctor,
+                viewModel: .init(),
+                appState: .shared,
                 isPatientPerspective: true,//patient.patientID,
                 showSorting: false,
                 useTracking: false
             )
-            PatientDeleteButton(appointments: appointments, patients: patients, patient: patient)
+            PatientDeleteButton(viewModel: .init(), patient: patient)
         }
         .navigationBarTitle(Text(patient.title), displayMode: .inline)
         .navigationBarItems(trailing:
                 Button(label(.edit)) {
-                patientData = patient.data
-                activeSheet = .editPatientSheet
+                viewModel.patientData = patient.data
+                viewModel.activeSheet = .editPatientSheet
             })
-        .fullScreenCover(item: $activeSheet) { item in
+        .fullScreenCover(item: $viewModel.activeSheet) { item in
             NavigationView {
                 switch item {
                 case .editPatientSheet:
                     EditPatient(
+                        viewModel: .init(),
                         patient: patient,
-                        patientData: $patientData,
-                        useBiometrics: .constant(false), showBiometrics: false
+                        appState: .shared,
+                        patientData: $viewModel.patientData,
+                        showBiometrics: false
                     )
                 case .createAppointmentSheet:
                     CreateAppointment(
-                        appointments: appointments,
-                        doctors: doctors,
-                        patients: patients,
-                        services: services,
-                        appointmentData: $appointmentData,
-                        isUserDoctor: isUserDoctor
+                        viewModel: .init(),
+                        appState: .shared,
+                        appointmentData: $viewModel.appointmentData
                     )
                 }
             }
@@ -88,15 +81,8 @@ struct PatientView: View {
 }
 
 struct PatientView_Previews: PreviewProvider {
-    
+
     static var previews: some View {
-        PatientView(
-            appointments: Appointments(),
-            doctors: Doctors(),
-            patients: Patients(),
-            services: Services(),
-            patient: Patient(using: Patient.example),
-            userID: .constant(UUID()), isUserDoctor: true
-        )
+        PatientView(patient: Patient(using: Patient.example), viewModel: .init())
     }
 }

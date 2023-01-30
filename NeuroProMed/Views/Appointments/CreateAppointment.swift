@@ -7,92 +7,96 @@
 
 import SwiftUI
 
-struct CreateAppointment: View {
+extension CreateAppointment {
     
-    @Environment(\.presentationMode) var presentationMode
-    
-    @ObservedObject var appointments: Appointments
-    @ObservedObject var doctors: Doctors
-    @ObservedObject var patients: Patients
-    @ObservedObject var services: Services
-    
-    @Binding var appointmentData: Appointment.AppointmentProperties
-    let isUserDoctor: Bool
-    
-    @State private var chosenDate = Date()
-    @State private var chosenTime = "08:00"
-    
-    @State private var notificationSchedule = NotificationSchedule(description: NSLocalizedString("notificationNone", comment: "Notification Schedule - None"), calendarComponent: .calendar, value: -1)
-    @State private var selectedCalendar = NSLocalizedString("notificationNone", comment: "Notification Schedule - None")
-    
-    @State private var alertMessage = ""
-    @State private var isShowingAlert = false
-
-    func setNotificationAndCalendar(for appointment: Appointment) {
-        guard let foundDoctor = doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }),
-              let foundPatient = patients.patients.first(where: { $0.patientID == appointment.patientID })
-        else { return }
+    class ViewModel: ObservableObject {
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .full
-        let message: String
-        if isUserDoctor {
-            message = String(format: label(.appointmentFor), foundPatient.title, dateFormatter.string(from: appointment.appointmentDate))
-        } else {
-            message = String(format: label(.appointmentWith), foundDoctor.title, dateFormatter.string(from: appointment.appointmentDate))
+        let appState: AppState
+        
+        init(appState: AppState = .shared) {
+            self.appState = appState
         }
         
-        notificationSchedule.setNotification(for: appointment, message: message)
-        CalendarHelper().add(appointment: appointment, to: selectedCalendar, title: message)
-    }
-    
+        @Published var chosenDate = Date()
+        @Published var chosenTime = "08:00"
+        
+        @Published var notificationSchedule = NotificationSchedule(description: NSLocalizedString("notificationNone", comment: "Notification Schedule - None"), calendarComponent: .calendar, value: -1)
+        @Published var selectedCalendar = NSLocalizedString("notificationNone", comment: "Notification Schedule - None")
+        
+        @Published var alertMessage = ""
+        @Published var isShowingAlert = false
 
-    func createAppointment() {
-        let newAppointment = Appointment(using: appointmentData)
-        newAppointment.create() { response in
-            let generator = UINotificationFeedbackGenerator()
-            switch response {
-            case .success:
-                appointments.appointments.insert(newAppointment, at: 0)
-                setNotificationAndCalendar(for: newAppointment)
-                generator.notificationOccurred(.success)
-                presentationMode.wrappedValue.dismiss()
-            case .failure(let error):
-                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+        func setNotificationAndCalendar(for appointment: Appointment) {
+            guard
+                let foundDoctor = appState.doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }),
+                let foundPatient = appState.patients.patients.first(where: { $0.patientID == appointment.patientID })
+            else { return }
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .full
+            let message: String
+            if appState.isUserDoctor {
+                message = String(format: label(.appointmentFor), foundPatient.title, dateFormatter.string(from: appointment.appointmentDate))
+            } else {
+                message = String(format: label(.appointmentWith), foundDoctor.title, dateFormatter.string(from: appointment.appointmentDate))
+            }
+            
+            notificationSchedule.setNotification(for: appointment, message: message)
+            CalendarHelper().add(appointment: appointment, to: selectedCalendar, title: message)
+        }
+        
+
+        func createAppointment() {
+//            let newAppointment = Appointment(using: appointmentData)
+//        newAppointment.create() { response in
+//            let generator = UINotificationFeedbackGenerator()
+//            switch response {
+//            case .success:
+//                appointments.appointments.insert(newAppointment, at: 0)
+//                setNotificationAndCalendar(for: newAppointment)
+//                generator.notificationOccurred(.success)
+//                presentationMode.wrappedValue.dismiss()
+//            case .failure(let error):
+//                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+//            }
+//        }
+        }
+        
+        func isAppointmentValid(_ doctorID: UUID?) -> Bool {
+            appState.doctors.doctors.contains {
+                $0.doctorID == doctorID
+            } && appState.patients.patients.contains {
+                $0.patientID == doctorID
             }
         }
     }
+}
+
+struct CreateAppointment: View {
     
-    var isAppointmentValid: Bool {
-        doctors.doctors.contains {
-            $0.doctorID == appointmentData.doctorID
-        } && patients.patients.contains {
-            $0.patientID == appointmentData.patientID
-        }
-    }
+    @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel: ViewModel
+    @ObservedObject var appState: AppState
+    @Binding var appointmentData: Appointment.AppointmentProperties
     
     var body: some View {
         Form {
             AppointmentFormGroup(
-                appointments: appointments,
-                doctors: doctors,
-                patients: patients,
-                services: services,
                 appointmentData: $appointmentData,
-                notificationSchedule: $notificationSchedule,
-                selectedCalendar: $selectedCalendar,
-                isUserDoctor: isUserDoctor,
-                isUsedByFilter: false
+                notificationSchedule: $viewModel.notificationSchedule,
+                selectedCalendar: $viewModel.selectedCalendar,
+                isUsedByFilter: false,
+                appState: appState
             )
         }
-            .navigationTitle(label(.createAppointment))
-            .navigationBarItems(
-                leading: Button(label(.cancel)) { presentationMode.wrappedValue.dismiss() },
-                trailing: Button(label(.save), action: createAppointment).disabled(!isAppointmentValid)
-            )
-            .alert(isPresented: $isShowingAlert) {
-                Alert(title: Text(label(.error)), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-            }
+        .navigationTitle(label(.createAppointment))
+        .navigationBarItems(
+            leading: Button(label(.cancel)) { dismiss() },
+            trailing: Button(label(.save), action: viewModel.createAppointment).disabled(!viewModel.isAppointmentValid(appointmentData.doctorID))
+        )
+        .alert(isPresented: $viewModel.isShowingAlert) {
+            Alert(title: Text(label(.error)), message: Text(viewModel.alertMessage), dismissButton: .default(Text("OK")))
+        }
 
     }
 }
@@ -100,12 +104,8 @@ struct CreateAppointment: View {
 struct CreateAppointments_Previews: PreviewProvider {
     static var previews: some View {
         CreateAppointment(
-            appointments: Appointments(),
-            doctors: Doctors(),
-            patients: Patients(),
-            services: Services(),
-            appointmentData: .constant(Appointment.example),
-            isUserDoctor: true
-        )
+            viewModel: .init(),
+            appState: .shared,
+            appointmentData: .constant(Appointment.example))
     }
 }

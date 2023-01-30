@@ -7,26 +7,38 @@
 
 import SwiftUI
 
-struct UnlockView: View {
+extension UnlockView {
     
-    @Binding var isUnlocked: Bool
-    
-    @State private var isRetryButtonDisplayed = false
-    @State private var alertMessage = ""
-    @State var activeAlert: ActiveAlert?
-    
-    func authenticate() {
-        let biometrics = BiometricsHelper()
-        if biometrics.isDeviceUnsupportedOrPermissionDenied() {
-            activeAlert = .settingsIssue
-            alertMessage = label(.biometricsPermissionRequest)
-        } else {
-            biometrics.authenticate { isEnabled in
-                isUnlocked = isEnabled
-                isRetryButtonDisplayed = !isEnabled
+    class ViewModel: ObservableObject {
+        
+        let appState: AppState
+        
+        init(appState: AppState = .shared) {
+            self.appState = appState
+        }
+        
+        @Published var isRetryButtonDisplayed = false
+        @Published var alertMessage = ""
+        @Published var activeAlert: ActiveAlert?
+        
+        func authenticate() {
+            let biometrics = BiometricsHelper()
+            if biometrics.isDeviceUnsupportedOrPermissionDenied() {
+                activeAlert = .settingsIssue
+                alertMessage = label(.biometricsPermissionRequest)
+            } else {
+                biometrics.authenticate { isEnabled in
+                    self.appState.isUnlocked = isEnabled
+                    self.isRetryButtonDisplayed = !isEnabled
+                }
             }
         }
     }
+}
+
+struct UnlockView: View {
+    
+    @StateObject var viewModel: ViewModel
     
     var body: some View {
         ZStack {
@@ -37,18 +49,18 @@ struct UnlockView: View {
                 .blur(radius: 13.0)
             VStack {
                 Spacer()
-                if isRetryButtonDisplayed {
-                    Button(label(.retryAuthentication), action: authenticate)
+                if viewModel.isRetryButtonDisplayed {
+                    Button(label(.retryAuthentication), action: viewModel.authenticate)
                 }
             }
         }
         .padding(50)
-        .onAppear(perform: authenticate)
+        .onAppear(perform: viewModel.authenticate)
     }
 }
 
 struct UnlockView_Previews: PreviewProvider {
     static var previews: some View {
-        UnlockView(isUnlocked: .constant(false))
+        UnlockView(viewModel: .init())
     }
 }

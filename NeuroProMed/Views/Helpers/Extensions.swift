@@ -66,6 +66,16 @@ extension View {
     }
 }
 
+extension ObservableObject {
+    
+    /// Get the text value of a particular app label
+    /// - Parameter label: App label (e.g. for a button, header or placeholder)
+    /// - Returns: The localized text value of that app label
+    func label(_ label: AppLabels) -> String {
+        "\(label)".localize(comment: label.rawValue)
+    }
+}
+
 extension View {
     
     

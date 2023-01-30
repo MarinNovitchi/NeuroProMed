@@ -9,12 +9,7 @@ import SwiftUI
 
 struct EditAppointment: View {
     
-    @Environment(\.presentationMode) var presentationMode
-    
-    @ObservedObject var appointments: Appointments
-    @ObservedObject var doctors: Doctors
-    @ObservedObject var patients: Patients
-    @ObservedObject var services: Services
+    @Environment(\.dismiss) var dismiss
     
     @ObservedObject var appointment: Appointment
     
@@ -22,35 +17,35 @@ struct EditAppointment: View {
     @Binding var notificationSchedule: NotificationSchedule
     @Binding var selectedCalendar: String
     let originalDate: Date
-    let isUserDoctor: Bool
+    @ObservedObject var appState: AppState
     
     @State private var alertMessage = ""
     @State private var isShowingAlert = false
     
     func saveChanges() {
         appointment.updateAppointment(using: appointmentData)
-        appointment.update() { response in
-            let generator = UINotificationFeedbackGenerator()
-            switch response {
-            case .success:
-                updateNotificationAndCalendar(for: appointment)
-                generator.notificationOccurred(.success)
-                presentationMode.wrappedValue.dismiss()
-            case .failure(let error):
-                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
-            }
-        }
+//        appointment.update() { response in
+//            let generator = UINotificationFeedbackGenerator()
+//            switch response {
+//            case .success:
+//                updateNotificationAndCalendar(for: appointment)
+//                generator.notificationOccurred(.success)
+//                presentationMode.wrappedValue.dismiss()
+//            case .failure(let error):
+//                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+//            }
+//        }
     }
     
     func updateNotificationAndCalendar(for appointment: Appointment) {
-        guard let foundDoctor = doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }),
-              let foundPatient = patients.patients.first(where: { $0.patientID == appointment.patientID })
+        guard let foundDoctor = appState.doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }),
+              let foundPatient = appState.patients.patients.first(where: { $0.patientID == appointment.patientID })
         else { return }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
         let message: String
-        if isUserDoctor {
+        if appState.isUserDoctor {
             message = String(format: label(.appointmentFor), foundPatient.title, dateFormatter.string(from: appointment.appointmentDate))
         } else {
             message = String(format: label(.appointmentWith), foundDoctor.title, dateFormatter.string(from: appointment.appointmentDate))
@@ -61,9 +56,9 @@ struct EditAppointment: View {
     }
     
     var isAppointmentValid: Bool {
-        doctors.doctors.contains {
+        appState.doctors.doctors.contains {
             $0.doctorID == appointmentData.doctorID
-        } && patients.patients.contains {
+        } && appState.patients.patients.contains {
             $0.patientID == appointmentData.patientID
         }
     }
@@ -71,20 +66,15 @@ struct EditAppointment: View {
     var body: some View {
         Form {
             AppointmentFormGroup(
-                appointments: appointments,
-                doctors: doctors,
-                patients: patients,
-                services: services,
                 appointmentData: $appointmentData,
                 notificationSchedule: $notificationSchedule,
                 selectedCalendar: $selectedCalendar,
-                isUserDoctor: isUserDoctor,
-                isUsedByFilter: false
+                isUsedByFilter: false, appState: appState
             )
         }
             .navigationTitle(label(.editAppointment))
             .navigationBarItems(
-                leading: Button(label(.cancel)) { presentationMode.wrappedValue.dismiss() },
+                leading: Button(label(.cancel)) { dismiss() },
                 trailing: Button(label(.save), action: saveChanges).disabled(!isAppointmentValid)
             )
             .alert(isPresented: $isShowingAlert) {
@@ -97,13 +87,11 @@ struct EditAppointment: View {
 struct EditAppointment_Previews: PreviewProvider {
     static var previews: some View {
         EditAppointment(
-            appointments: Appointments(),
-            doctors: Doctors(),
-            patients: Patients(),
-            services: Services(),
             appointment: Appointment(using: Appointment.example),
             appointmentData: .constant(Appointment.example),
             notificationSchedule: .constant(NotificationSchedule(description: NSLocalizedString("notificationNone", comment: "Notification Schedule - None"), calendarComponent: .calendar, value: -1)),
-            selectedCalendar: .constant(NSLocalizedString("notificationNone", comment: "Notification Schedule - None")), originalDate: Date(), isUserDoctor: true)
+            selectedCalendar: .constant(NSLocalizedString("notificationNone", comment: "Notification Schedule - None")),
+            originalDate: Date(),
+            appState: .shared)
     }
 }

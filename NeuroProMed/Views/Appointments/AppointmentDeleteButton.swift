@@ -9,28 +9,25 @@ import SwiftUI
 
 struct AppointmentDeleteButton: View {
     
-    @Environment(\.presentationMode) var presentationMode
-    
-    @ObservedObject var appointments: Appointments
     @ObservedObject var appointment: Appointment
     
     @State private var activeAlert: ActiveAlert?
     @State private var alertMessage = ""
     
     func deleteAppointment() {
-        appointment.delete() { response in
-            switch response {
-            case .success:
-                let generator = UINotificationFeedbackGenerator()
-                generator.notificationOccurred(.success)
-                appointments.appointments.removeAll{ $0.appointmentID == appointment.appointmentID }
-                deleteNotificationAndCalendar()
-                presentationMode.wrappedValue.dismiss()
-            case .failure(let error):
-                alertMessage = error.getMessage()
-                activeAlert = .error
-            }
-        }
+//        appointment.delete() { response in
+//            switch response {
+//            case .success:
+//                let generator = UINotificationFeedbackGenerator()
+//                generator.notificationOccurred(.success)
+//                appointments.appointments.removeAll{ $0.appointmentID == appointment.appointmentID }
+//                deleteNotificationAndCalendar()
+//                presentationMode.wrappedValue.dismiss()
+//            case .failure(let error):
+//                alertMessage = error.getMessage()
+//                activeAlert = .error
+//            }
+//        }
     }
     
     func deleteNotificationAndCalendar() {
@@ -60,6 +57,6 @@ struct AppointmentDeleteButton: View {
 
 struct AppointmentDeleteButton_Previews: PreviewProvider {
     static var previews: some View {
-        AppointmentDeleteButton(appointments: Appointments(), appointment: Appointment(using: Appointment.example))
+        AppointmentDeleteButton(appointment: Appointment(using: Appointment.example))
     }
 }

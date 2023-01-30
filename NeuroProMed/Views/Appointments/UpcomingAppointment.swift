@@ -9,16 +9,10 @@ import SwiftUI
 
 struct UpcomingAppointment: View {
     
-    @ObservedObject var appState = AppState.shared
-    
-    @ObservedObject var appointments: Appointments
-    @ObservedObject var doctors: Doctors
-    @ObservedObject var patients: Patients
-    @ObservedObject var services: Services
+    @ObservedObject var appState: AppState
     
     @ObservedObject var appointment: Appointment
     let isPatientPerspective: Bool
-    let isUserDoctor: Bool
     let useTracking: Bool
     
     var pushNavigationBinding : Binding<String?> {
@@ -30,60 +24,50 @@ struct UpcomingAppointment: View {
     }
     
     var appointmentDoctor: Doctor {
-        doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }) ?? Doctor(using: Doctor.example)
+        appState.doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }) ?? Doctor(using: Doctor.example)
     }
     var appointmentPatient: Patient {
-        patients.patients.first(where: { $0.patientID == appointment.patientID }) ?? Patient(using: Patient.example)
+        appState.patients.patients.first(where: { $0.patientID == appointment.patientID }) ?? Patient(using: Patient.example)
     }
     
     var body: some View {
         if useTracking {
             NavigationLink(destination:
                             AppointmentView(
-                                appointments: appointments,
-                                doctors: doctors,
-                                patients: patients,
-                                services: services,
+                                viewModel: .init(),
                                 appointment: appointment,
                                 doctor: appointmentDoctor,
                                 patient: appointmentPatient,
-                                isUserDoctor: isUserDoctor
+                                appState: appState
                             ),
                            tag: appointment.appointmentID.uuidString,
                            selection: pushNavigationBinding
             ) {
                 UpcomingAppointmentRow(
-                    appointments: appointments,
-                    doctors: doctors,
-                    patients: patients,
-                    services: services,
+                    viewModel: .init(),
                     appointment: appointment,
                     doctor: appointmentDoctor,
                     patient: appointmentPatient,
+                    appState: appState,
                     isPatientPerspective: isPatientPerspective
                 )
             }
         } else {
             NavigationLink(destination:
                             AppointmentView(
-                                appointments: appointments,
-                                doctors: doctors,
-                                patients: patients,
-                                services: services,
+                                viewModel: .init(),
                                 appointment: appointment,
                                 doctor: appointmentDoctor,
                                 patient: appointmentPatient,
-                                isUserDoctor: isUserDoctor
+                                appState: appState
                             )
             ) {
                 UpcomingAppointmentRow(
-                    appointments: appointments,
-                    doctors: doctors,
-                    patients: patients,
-                    services: services,
+                    viewModel: .init(),
                     appointment: appointment,
                     doctor: appointmentDoctor,
                     patient: appointmentPatient,
+                    appState: appState,
                     isPatientPerspective: isPatientPerspective
                 )
             }
@@ -95,13 +79,9 @@ struct UpcomingAppointment: View {
 struct UpcomingAppointment_Previews: PreviewProvider {
     static var previews: some View {
         UpcomingAppointment(
-            appointments: Appointments(),
-            doctors: Doctors(),
-            patients: Patients(),
-            services: Services(),
+            appState: .shared,
             appointment: Appointment(using: Appointment.example),
             isPatientPerspective: true,
-            isUserDoctor: true,
             useTracking: false
         )
     }

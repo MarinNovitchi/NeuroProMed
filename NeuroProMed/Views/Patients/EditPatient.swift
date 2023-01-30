@@ -7,66 +7,81 @@
 
 import SwiftUI
 
-struct EditPatient: View {
+extension EditPatient {
     
-    @Environment(\.presentationMode) var presentationMode
-    
-    @ObservedObject var patient: Patient
-    
-    @Binding var patientData: Patient.PatientProperties
-    @Binding var useBiometrics: Bool
-    let showBiometrics: Bool
-    
-    @State private var temporaryBiometricsSettings = false
-    @State private var alertMessage = ""
-    @State private var isShowingAlert = false
-    
-    func saveChanges() {
-        patient.updatePatient(using: patientData)
-        patient.update() { response in
-            let generator = UINotificationFeedbackGenerator()
-            switch response {
-            case .success:
-                if showBiometrics {
-                    saveBiometricsSetting()
-                }
-                generator.notificationOccurred(.success)
-                presentationMode.wrappedValue.dismiss()
-            case .failure(let error):
-                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+    class ViewModel: ObservableObject {
+        
+        let appState: AppState
+        
+        init(appState: AppState = .shared) {
+            self.appState = appState
+        }
+        
+        @Published var temporaryBiometricsSettings = false
+        @Published var alertMessage = ""
+        @Published var isShowingAlert = false
+        
+        func saveChanges() {
+//            patient.updatePatient(using: patientData)
+    //        patient.update() { response in
+    //            let generator = UINotificationFeedbackGenerator()
+    //            switch response {
+    //            case .success:
+    //                if showBiometrics {
+    //                    saveBiometricsSetting()
+    //                }
+    //                generator.notificationOccurred(.success)
+    //                presentationMode.wrappedValue.dismiss()
+    //            case .failure(let error):
+    //                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+    //            }
+    //        }
+        }
+        
+        func saveBiometricsSetting(for patientID: UUID) {
+            let keychainHelper = KeychainHelper()
+            let credentials = KeychainCredentials(userID: patientID, isDoctor: false, useBiometrics: temporaryBiometricsSettings)
+            do {
+                try keychainHelper.updateCredentials(credentials: credentials)
+                appState.useBiometrics = temporaryBiometricsSettings
+            } catch {
+                alertMessage = label(.failToUpdateSettings)
+                isShowingAlert = true
             }
         }
-    }
-    
-    func saveBiometricsSetting() {
-        let keychainHelper = KeychainHelper()
-        let credentials = KeychainCredentials(userID: patient.patientID, isDoctor: false, useBiometrics: temporaryBiometricsSettings)
-        do {
-            try keychainHelper.updateCredentials(credentials: credentials)
-            useBiometrics = temporaryBiometricsSettings
-        } catch {
-            alertMessage = label(.failToUpdateSettings)
-            isShowingAlert = true
+        
+        func assignTemporaryBiometricsSettings() {
+            temporaryBiometricsSettings = appState.useBiometrics
         }
     }
+}
+
+struct EditPatient: View {
     
+    @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel: ViewModel
+    @ObservedObject var patient: Patient
+    @ObservedObject var appState: AppState
+    
+    @Binding var patientData: Patient.PatientProperties
+    let showBiometrics: Bool
     
     var body: some View {
         Form {
             PatientDetailsSection(patientData: $patientData, isUsedByFilter: false)
             if showBiometrics {
-                BiometricsSettingsView(useBiometrics: $temporaryBiometricsSettings)
+                BiometricsSettingsView(useBiometrics: $viewModel.temporaryBiometricsSettings)
             }
         }
         .navigationTitle(label(.editPatient))
         .navigationBarItems(
-            leading: Button(label(.cancel)) { presentationMode.wrappedValue.dismiss() },
-            trailing: Button(label(.save), action: saveChanges)
+            leading: Button(label(.cancel)) { dismiss() },
+            trailing: Button(label(.save), action: viewModel.saveChanges)
                 .disabled(patientData.firstName.isEmpty || patientData.lastName.isEmpty)
         )
-        .onAppear(perform: { temporaryBiometricsSettings = useBiometrics })
-        .alert(isPresented: $isShowingAlert) {
-            Alert(title: Text(label(.error)), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        .onAppear(perform: viewModel.assignTemporaryBiometricsSettings)
+        .alert(isPresented: $viewModel.isShowingAlert) {
+            Alert(title: Text(label(.error)), message: Text(viewModel.alertMessage), dismissButton: .default(Text("OK")))
         }
     }
 }
@@ -74,9 +89,11 @@ struct EditPatient: View {
 struct EditPatient_Previews: PreviewProvider {
     static var previews: some View {
         EditPatient(
+            viewModel: .init(),
             patient: Patient(using: Patient.example),
+            appState: .shared,
             patientData: .constant(Patient.example),
-            useBiometrics: .constant(true), showBiometrics: true
+            showBiometrics: true
         )
     }
 }

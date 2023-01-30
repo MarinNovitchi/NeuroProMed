@@ -9,36 +9,28 @@ import SwiftUI
 
 struct PastAppointment: View {
     
-    @ObservedObject var appointments: Appointments
-    @ObservedObject var doctors: Doctors
-    @ObservedObject var patients: Patients
-    @ObservedObject var services: Services
-    
     @ObservedObject var appointment: Appointment
+    @ObservedObject var appState: AppState
     let isPatientPerspective: Bool
-    let isUserDoctor: Bool
     
     var appointmentDoctor: Doctor {
-        doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }) ?? Doctor(using: Doctor.example)
+        appState.doctors.doctors.first(where: { $0.doctorID == appointment.doctorID }) ?? Doctor(using: Doctor.example)
     }
     var appointmentPatient: Patient {
-        patients.patients.first(where: { $0.patientID == appointment.patientID }) ?? Patient(using: Patient.example)
+        appState.patients.patients.first(where: { $0.patientID == appointment.patientID }) ?? Patient(using: Patient.example)
     }
     
     var body: some View {
         NavigationLink(destination:
                         AppointmentView(
-                            appointments: appointments,
-                            doctors: doctors,
-                            patients: patients,
-                            services: services,
+                            viewModel: .init(),
                             appointment: appointment,
                             doctor: appointmentDoctor,
                             patient: appointmentPatient,
-                            isUserDoctor: isUserDoctor
+                            appState: appState
                         )) {
             PastAppointmentRow(
-                services: services,
+                appState: appState,
                 appointment: appointment,
                 doctor: appointmentDoctor,
                 patient: appointmentPatient,
@@ -50,13 +42,9 @@ struct PastAppointment: View {
 struct PastAppointment_Previews: PreviewProvider {
     static var previews: some View {
         PastAppointment(
-            appointments: Appointments(),
-            doctors: Doctors(),
-            patients: Patients(),
-            services: Services(),
             appointment: Appointment(using: Appointment.example),
-            isPatientPerspective: true,
-            isUserDoctor: true
+            appState: .shared,
+            isPatientPerspective: true
         )
     }
 }

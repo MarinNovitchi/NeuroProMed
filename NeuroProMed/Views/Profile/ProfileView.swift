@@ -7,92 +7,122 @@
 
 import SwiftUI
 
+extension ProfileView {
+    
+    class ViewModel: ObservableObject {
+        
+        let appState: AppState
+        
+        init(appState: AppState = .shared) {
+            self.appState = appState
+        }
+        
+//        @Published var patient = Patient(using: Patient.PatientProperties())
+        var patient: Patient {
+            appState.relevantPatient
+        }
+        @Published var patientData: Patient.PatientProperties = Patient.PatientProperties()
+        
+//        @Published var doctor = Doctor(using: Doctor.example)
+        @Published var doctorData: Doctor.DoctorProperties = Doctor.DoctorProperties()
+        var doctor: Doctor {
+            appState.relevantDoctor
+        }
+        
+        @Published var alertMessage = ""
+        @Published var isShowingAlert = false
+        @Published var activeSheet: ActiveSheet?
+        
+        func deleteKeyChainCredentials() {
+            
+            let generator = UINotificationFeedbackGenerator()
+            let keychainHelper = KeychainHelper()
+            do {
+                try keychainHelper.deleteCredentials()
+                generator.notificationOccurred(.success)
+                AppState.shared.useBiometrics = false
+                AppState.shared.isAuthenticated = false
+            } catch  {
+                generator.notificationOccurred(.error)
+                alertMessage = label(.failToDeleteKeychain)
+                isShowingAlert = true
+            }
+        }
+        
+        var isUserDoctor: Bool {
+            appState.isUserDoctor
+        }
+        
+        var pageTitle: String {
+            isUserDoctor ? doctor.title : patient.title
+        }
+        
+        func edit() {
+            isUserDoctor ? editDoctor() : editPatient()
+        }
+        
+        private func editDoctor() {
+            doctorData = doctor.data
+            activeSheet = .editDoctorSheet
+        }
+        
+        private func editPatient() {
+            patientData = patient.data
+            activeSheet = .editPatientSheet
+        }
+        
+        enum ActiveSheet: Identifiable {
+            case editPatientSheet, editDoctorSheet
+            var id: Int {
+                hashValue
+            }
+        }
+    }
+}
+
 struct ProfileView: View {
     
-    @ObservedObject var appointments: Appointments
-    
-    @ObservedObject var patient: Patient
-    @ObservedObject var doctor: Doctor
-    
-    @Binding var useBiometrics: Bool
-    @Binding var isAuthenticated: Bool
-    let isUserDoctor: Bool
-    
-    @State private var patientData: Patient.PatientProperties = Patient.PatientProperties()
-    @State private var doctorData: Doctor.DoctorProperties = Doctor.DoctorProperties()
-    
-    @State private var alertMessage = ""
-    @State private var isShowingAlert = false
-    @State var activeSheet: ActiveSheet?
-    enum ActiveSheet: Identifiable {
-        case editPatientSheet, editDoctorSheet
-        var id: Int {
-            hashValue
-        }
-    }
-    
-    func deleteKeyChainCredentials() {
-        
-        let generator = UINotificationFeedbackGenerator()
-        let keychainHelper = KeychainHelper()
-        do {
-            try keychainHelper.deleteCredentials()
-            generator.notificationOccurred(.success)
-            useBiometrics = false
-            isAuthenticated = false
-        } catch  {
-            generator.notificationOccurred(.error)
-            alertMessage = label(.failToDeleteKeychain)
-            isShowingAlert = true
-        }
-    }
+    @StateObject var viewModel: ViewModel
+    @ObservedObject var appState: AppState
 
     var body: some View {
         NavigationView {
             List {
-                if isUserDoctor {
-                    DoctorDetails(doctor: doctor)
-                    if doctor.unavailability.count > 0 {
-                        NavigationLink(String(format: label(.holidayAmount), doctorData.unavailability.count), destination:
+                if viewModel.isUserDoctor {
+                    DoctorDetails(doctor: viewModel.doctor)
+                    if viewModel.doctor.unavailability.count > 0 {
+                        NavigationLink(String(format: label(.holidayAmount), viewModel.doctorData.unavailability.count), destination:
                             List {
-                                HolidaySection(doctorData: $doctorData, isSectionEditable: false)
+                            HolidaySection(viewModel: .init(), doctorData: $viewModel.doctorData, isSectionEditable: false)
                             }
                             .navigationTitle(label(.holidays))
                         )
                     } else {
-                        Text(String(format: label(.holidayAmount), doctorData.unavailability.count))
+                        Text(String(format: label(.holidayAmount), viewModel.doctorData.unavailability.count))
                     }
                 } else {
-                    PatientDetails(patient: patient)
+                    PatientDetails(patient: viewModel.patient)
                 }
-                ListButton(title: label(.logout), action: deleteKeyChainCredentials)
+                ListButton(title: label(.logout), action: viewModel.deleteKeyChainCredentials)
             }
-            .onAppear(perform: { doctorData = doctor.data })
-            .navigationTitle(isUserDoctor ? doctor.title : patient.title)
-            .navigationBarItems(trailing:
-                Button(label(.edit)) {
-                    if isUserDoctor {
-                        doctorData = doctor.data
-                        activeSheet = .editDoctorSheet
-                    } else {
-                        patientData = patient.data
-                        activeSheet = .editPatientSheet
-                    }
-                })
-            .fullScreenCover(item: $activeSheet) { item in
+//            .onAppear(perform: {
+//                viewModel.doctorData = doctor.data
+//            })
+            .navigationTitle(viewModel.pageTitle)
+            .navigationBarItems(trailing: Button(label(.edit), action: viewModel.edit))
+            .fullScreenCover(item: $viewModel.activeSheet) { item in
                 NavigationView {
                     switch item {
                     case .editDoctorSheet:
                         EditDoctor(
-                            appointments: appointments,
-                            doctor: doctor,
-                            doctorData: $doctorData,
-                            useBiometrics: $useBiometrics)
+                            viewModel: .init(), doctor: viewModel.doctor,
+                            doctorData: $viewModel.doctorData)
                     case .editPatientSheet:
                         EditPatient(
-                            patient: patient,
-                            patientData: $patientData,
-                            useBiometrics: $useBiometrics,
+                            viewModel: .init(),
+                            patient: viewModel.patient,
+                            appState: .shared,
+                            patientData: $viewModel.patientData,
                             showBiometrics: true)
                     }
                 }
@@ -104,12 +134,8 @@ struct ProfileView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView(
-            appointments: Appointments(),
-            patient: Patient(using: Patient.example),
-            doctor: Doctor(using: Doctor.example),
-            useBiometrics: .constant(true),
-            isAuthenticated: .constant(true),
-            isUserDoctor: true)
+            viewModel: .init(),
+            appState: .shared)
     }
 }
 

@@ -7,52 +7,76 @@
 
 import SwiftUI
 
-struct AddHoliday: View {
+extension AddHoliday {
     
-    @Environment(\.presentationMode) var presentationMode
-    
-    @ObservedObject var appointments: Appointments
-    
-    @Binding var doctorData: Doctor.DoctorProperties
-    
-    @State private var dateToAdd = Date()
-    @State private var alertMessage = ""
-    @State private var isShowingAlert = false
-    
-    func addDayOff() {
-        if isValidForDayOff() {
+    class ViewModel: ObservableObject {
+        
+        init(doctorData: Doctor.DoctorProperties) {
+            self.doctorData = doctorData
+        }
+        
+        @Published var dateToAdd = Date()
+        @Published var doctorData: Doctor.DoctorProperties
+        
+        func addingDayOff() -> Bool {
+            guard isValidForDayOff else {
+                return false
+            }
             if !doctorData.unavailability.contains(dateToAdd.setToMidDayGMT()) {
                 doctorData.unavailability.append(dateToAdd.setToMidDayGMT())
                 doctorData.unavailability.sort(by: { $0.compare($1) == .orderedAscending })
             }
-            presentationMode.wrappedValue.dismiss()
-        } else {
-            alertMessage = label(.invalidHolidayMessage)
-            isShowingAlert = true
+            return true
         }
+        
+        var isValidForDayOff: Bool {
+            !AppState.shared.appointments.appointments.contains{
+                $0.doctorID == doctorData.doctorID && dateToAdd.setToMidDayGMT().compare($0.appointmentDate.setToMidDayGMT()) == .orderedSame
+            }
+        }
+    }
+}
+
+struct AddHoliday: View {
+    
+    init(viewModel: ViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    func isValidForDayOff() -> Bool {
-        return !appointments.appointments.contains{
-            $0.doctorID == doctorData.doctorID && dateToAdd.setToMidDayGMT().compare($0.appointmentDate.setToMidDayGMT()) == .orderedSame
-        }
-    }
+    @Environment(\.dismiss) var dismiss
+
+    @StateObject var viewModel: ViewModel
+    
+    @State private var alertMessage = ""
+    @State private var isShowingAlert = false
     
     var body: some View {
-        DatePicker("Pick a date", selection: $dateToAdd, in: Date()..., displayedComponents: .date)
-            .datePickerStyle(GraphicalDatePickerStyle())
+        DatePicker("Pick a date", selection: $viewModel.dateToAdd, in: Date()..., displayedComponents: .date)
+            .datePickerStyle(.graphical)
             .navigationTitle(label(.addNewHoliday))
-            .navigationBarItems(
-                leading: Button(label(.cancel)) { presentationMode.wrappedValue.dismiss() } ,
-                trailing: Button(label(.add), action: addDayOff))
             .alert(isPresented: $isShowingAlert) {
                 Alert(title: Text(label(.error)), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(label(.cancel)) { dismiss() }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(label(.add)) {
+                        if viewModel.addingDayOff() {
+                            dismiss()
+                        } else {
+                            alertMessage = label(.invalidHolidayMessage)
+                            isShowingAlert = true
+                        }
+                    }
+                }
             }
     }
 }
 
 struct AddHoliday_Previews: PreviewProvider {
     static var previews: some View {
-        AddHoliday(appointments: Appointments(), doctorData: .constant(Doctor.example))
+        AddHoliday(viewModel: .init(doctorData: Doctor.example))
     }
 }

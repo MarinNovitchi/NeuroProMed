@@ -257,9 +257,9 @@
 				A84395F52676A13B001CE302 /* UnlockView.swift */,
 				A84395F12673570F001CE302 /* MainView.swift */,
 				A84395FD267E2C25001CE302 /* Login */,
-				A84395F0267356C7001CE302 /* Profile */,
 				A80561E02619B86A004C6D71 /* Patients */,
 				A80561E12619B90B004C6D71 /* Appointments */,
+				A84395F0267356C7001CE302 /* Profile */,
 				A80561E42619B9FF004C6D71 /* Helpers */,
 			);
 			path = Views;

@@ -7,80 +7,87 @@
 
 import SwiftUI
 
-struct AppointmentsView: View {
+extension AppointmentsView {
     
-    @ObservedObject var appointments: Appointments
-    @ObservedObject var doctors: Doctors
-    @ObservedObject var patients: Patients
-    @ObservedObject var services: Services
-    
-    @Binding var userID: UUID
-    let isUserDoctor: Bool
-    
-    @State var isFilterApplied = false
-    @State private var appointmentData = Appointment.AppointmentProperties(doctorID: UUID(), patientID: UUID())
-    
-    @State var activeSheet: ActiveSheet?
-    enum ActiveSheet: Identifiable {
-        case createAppointmentSheet, filterAppointmentsSheet
-        var id: Int {
-            hashValue
+    class ViewModel: ObservableObject {
+        
+        let appState: AppState
+        
+        init(appState: AppState = .shared) {
+            self.appState = appState
+        }
+        
+        @Published var isFilterApplied = false
+        @Published var appointmentData = Appointment.AppointmentProperties(doctorID: UUID(), patientID: UUID())
+        
+        @Published var activeSheet: ActiveSheet?
+        enum ActiveSheet: Identifiable {
+            case createAppointmentSheet, filterAppointmentsSheet
+            var id: Int {
+                hashValue
+            }
+        }
+        
+        func triggerAppointmentCreation() {
+            resetAppointmentData()
+            activeSheet = .createAppointmentSheet
+        }
+        
+        func triggerAppointmentFiltering() {
+            resetAppointmentData()
+            activeSheet = .filterAppointmentsSheet
+        }
+        
+        func resetAppointmentData() {
+            appointmentData = appState.isUserDoctor ?
+            Appointment.AppointmentProperties(
+                doctorID: appState.userID,
+                patientID: appState.patients.patients.first?.patientID ?? UUID())
+            : Appointment.AppointmentProperties(
+                doctorID: appState.doctors.doctors.first?.doctorID ?? UUID(),
+                patientID: appState.userID)
+        }
+        
+        var isUserDoctor: Bool {
+            appState.isUserDoctor
         }
     }
+}
+
+struct AppointmentsView: View {
     
-    func resetAppointmentData() {
-        appointmentData = isUserDoctor ?
-            Appointment.AppointmentProperties(doctorID: userID, patientID: patients.patients.first?.patientID ?? UUID())
-            : Appointment.AppointmentProperties(doctorID: doctors.doctors.first?.doctorID ?? UUID(), patientID: userID)
-    }
+    @StateObject var viewModel: ViewModel
+    @ObservedObject var appState: AppState
 
     var body: some View {
         NavigationView {
             List {
                 AppointmentSections(
-                    appointments: appointments,
-                    doctors: doctors, patients: patients,
-                    services: services,
-                    userID: $userID, isUserDoctor: isUserDoctor,
-                    isPatientPerspective: !isUserDoctor,
+                    viewModel: .init(),
+                    appState: appState,
+                    isPatientPerspective: !viewModel.isUserDoctor,
                     showSorting: true,
                     useTracking: true
                 )
             }
             .navigationTitle(label(.appointments))
             .navigationBarItems(
-                leading: Button(label(.new)) {
-                    resetAppointmentData()
-                    activeSheet = .createAppointmentSheet
-                },
-                trailing: Button(label(.filter)) {
-                    resetAppointmentData()
-                    activeSheet = .filterAppointmentsSheet
-                }
-                    .foregroundColor(isFilterApplied ? Color("ComplimentaryColor") : .accentColor)
+                leading: Button(label(.new), action: viewModel.triggerAppointmentCreation),
+                trailing: Button(label(.filter), action: viewModel.triggerAppointmentFiltering) 
+                    .foregroundColor(viewModel.isFilterApplied ? Color("ComplimentaryColor") : .accentColor)
             )
-            .fullScreenCover(item: $activeSheet) { item in
+            .fullScreenCover(item: $viewModel.activeSheet) { item in
                 NavigationView {
                     switch item {
                     case .createAppointmentSheet:
-                        CreateAppointment(
-                            appointments: appointments,
-                            doctors: doctors,
-                            patients: patients,
-                            services: services,
-                            appointmentData: $appointmentData,
-                            isUserDoctor: isUserDoctor
-                        )
+                        CreateAppointment(viewModel: .init(), appState: appState, appointmentData: $viewModel.appointmentData)
                     case .filterAppointmentsSheet:
                         FilterAppointments(
-                            appointments: appointments,
-                            doctors: doctors,
-                            patients: patients,
-                            services: services,
-                            isFilterApplied: $isFilterApplied,
-                            filterData: $appointmentData,
-                            doctorUserID: userID,
-                            isUserDoctor: isUserDoctor
+                            viewModel: .init(),
+                            appState: appState,
+                            isFilterApplied: $viewModel.isFilterApplied,
+                            filterData: $viewModel.appointmentData,
+                            doctorUserID: appState.userID
                         )
                     }
                 }
@@ -92,12 +99,7 @@ struct AppointmentsView: View {
 
 struct AppointmentsView_Previews: PreviewProvider {
     static var previews: some View {
-        AppointmentsView(
-            appointments: Appointments(),
-            doctors: Doctors(),
-            patients: Patients(),
-            services: Services(),
-            userID: .constant(UUID()), isUserDoctor: true
+        AppointmentsView(viewModel: .init(), appState: .shared
         )
     }
 }

@@ -9,64 +9,80 @@ import LocalAuthentication
 import Security
 import SwiftUI
 
-struct ContentView: View {
+extension ContentView {
     
-    @State private var isAuthenticated = false
-    @State private var userID = UUID()
-    @State private var isUserDoctor = false
-    
-    @State private var useBiometrics = false
-    @State private var isUnlocked = false
-    
-    func loadView(){
-        retrieveKeyChainValue()
-        if !useBiometrics {
-            isUnlocked = true
+    class ViewModel: ObservableObject {
+        
+        let appState: AppState
+        
+        init(appState: AppState = .shared) {
+            self.appState = appState
+        }
+        
+        func loadView(){
+            retrieveKeyChainValue()
+            if !appState.useBiometrics {
+                appState.isUnlocked = true
+            }
+        }
+        
+        func retrieveKeyChainValue() {
+            let keychainHelper = KeychainHelper()
+            do {
+                let credentials = try keychainHelper.retrieveCredentials()
+                appState.userID = credentials.userID
+                appState.isUserDoctor = credentials.isDoctor
+                appState.useBiometrics = credentials.useBiometrics
+                appState.isAuthenticated = true
+            } catch {
+                print("no keychain values found")
+            }
+        }
+        
+        var isAuthenticated: Bool {
+            appState.isAuthenticated
+        }
+        
+        var isUnlocked: Bool {
+            appState.isUnlocked
         }
     }
+}
+
+struct ContentView: View {
     
-    func retrieveKeyChainValue() {
-        let keychainHelper = KeychainHelper()
-        do {
-            let credentials = try keychainHelper.retrieveCredentials()
-            userID = credentials.userID
-            isUserDoctor = credentials.isDoctor
-            useBiometrics = credentials.useBiometrics
-            isAuthenticated = true
-        } catch {
-            print("no keychain values found")
-        }
+    @StateObject var viewModel: ViewModel
+    @StateObject var appState: AppState
+    
+    init(viewModel: ViewModel = ViewModel(), appState: AppState = .shared) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+        _appState = StateObject(wrappedValue: appState)
     }
     
     var body: some View { 
         ZStack {
-            if isAuthenticated {
-                if isUnlocked {
-                    MainView(
-                        userID: $userID,
-                        isUserDoctor: $isUserDoctor,
-                        isAuthenticated: $isAuthenticated,
-                        useBiometrics: $useBiometrics)
+            if viewModel.isAuthenticated {
+                if viewModel.isUnlocked {
+                    MainView(viewModel: .init(), appState: appState)
                 } else {
-                    UnlockView(isUnlocked: $isUnlocked)
+                    UnlockView(viewModel: .init())
                 }
-
             } else {
                 VStack {
-                    LoginView(isAuthenticated: $isAuthenticated, isUserDoctor: $isUserDoctor, userID: $userID)
+                    LoginView()
                     Button("Developer unlock: PATIENT") {
-                        userID = UUID(uuidString: "BFF5ABB3-1AA4-4821-89E7-68DF30D5B98D")!
-                        isAuthenticated = true
+                        appState.userID = UUID(uuidString: "BFF5ABB3-1AA4-4821-89E7-68DF30D5B98D")!
+                        appState.isAuthenticated = true
                     }
                     Button("Developer unlock: DOCTOR") {
-                        userID = UUID(uuidString: "9B1DEB4D-3B7D-4BAD-9BDD-2B0D7B3DCB69")!
-                        isUserDoctor = true
-                        isAuthenticated = true
+                        appState.userID = UUID(uuidString: "9B1DEB4D-3B7D-4BAD-9BDD-2B0D7B3DCB69")!
+                        appState.isUserDoctor = true
+                        appState.isAuthenticated = true
                     }
                 }
             }
         }
-        .onAppear(perform: loadView)
+        .onAppear(perform: viewModel.loadView)
     }
 }
 

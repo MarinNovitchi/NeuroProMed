@@ -9,15 +9,14 @@ import SwiftUI
 
 struct PastAppointmentRow: View {
     
-    @ObservedObject var services: Services
-    
+    @ObservedObject var appState: AppState
     @ObservedObject var appointment: Appointment
     @ObservedObject var doctor: Doctor
     @ObservedObject var patient: Patient
     let isPatientPerspective: Bool
     
     var filteredServices: [Service] {
-        services.services.filter {
+        appState.services.services.filter {
             appointment.services.contains($0.serviceID)
         }
     }
@@ -50,7 +49,7 @@ struct PastAppointmentRow: View {
 struct PastAppointmentRow_Previews: PreviewProvider {
     static var previews: some View {
         PastAppointmentRow(
-            services: Services(),
+            appState: .shared,
             appointment: Appointment(using: Appointment.example),
             doctor: Doctor(using: Doctor.example),
             patient: Patient(using: Patient.example),
