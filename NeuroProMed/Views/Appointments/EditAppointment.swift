@@ -23,18 +23,26 @@ struct EditAppointment: View {
     @State private var isShowingAlert = false
     
     func saveChanges() {
-        appointment.updateAppointment(using: appointmentData)
-//        appointment.update() { response in
-//            let generator = UINotificationFeedbackGenerator()
-//            switch response {
-//            case .success:
-//                updateNotificationAndCalendar(for: appointment)
-//                generator.notificationOccurred(.success)
-//                presentationMode.wrappedValue.dismiss()
-//            case .failure(let error):
-//                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
-//            }
-//        }
+        Task {
+            let generator = UINotificationFeedbackGenerator()
+            do {
+                appointment.updateAppointment(using: appointmentData)
+                let response = try await appointment.update()
+                guard !response.error else {
+                    let error = AppError.serverError(response.message ?? "Unknown message")
+                    error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+                    return
+                }
+                generator.notificationOccurred(.success)
+                updateNotificationAndCalendar(for: appointment)
+                dismiss()
+            } catch let error as AppError  {
+                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+            } catch {
+                let error = AppError.unknown
+                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+            }
+        }
     }
     
     func updateNotificationAndCalendar(for appointment: Appointment) {

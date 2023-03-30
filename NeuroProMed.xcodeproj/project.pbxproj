@@ -7,6 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C80B4DE29D6113100BBAE15 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4DD29D6113100BBAE15 /* ContentViewModel.swift */; };
+		9C80B4E129D611BE00BBAE15 /* UnlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4E029D611BE00BBAE15 /* UnlockViewModel.swift */; };
+		9C80B4E429D6121D00BBAE15 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4E329D6121D00BBAE15 /* MainViewModel.swift */; };
+		9C80B4E729D6133300BBAE15 /* SignInButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4E629D6133300BBAE15 /* SignInButtonViewModel.swift */; };
+		9C80B4EA29D6144200BBAE15 /* PatientsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4E929D6144200BBAE15 /* PatientsViewModel.swift */; };
+		9C80B4ED29D614E000BBAE15 /* CreatePatientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4EC29D614E000BBAE15 /* CreatePatientViewModel.swift */; };
+		9C80B4F029D615E200BBAE15 /* FilterPatientsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4EF29D615E200BBAE15 /* FilterPatientsViewModel.swift */; };
+		9C80B4F329D6167200BBAE15 /* PatientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4F229D6167200BBAE15 /* PatientViewModel.swift */; };
+		9C80B4F629D616EB00BBAE15 /* PatientDeleteButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4F529D616EB00BBAE15 /* PatientDeleteButtonViewModel.swift */; };
+		9C80B4F929D6175D00BBAE15 /* EditPatientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4F829D6175D00BBAE15 /* EditPatientViewModel.swift */; };
+		9C80B4FC29D617F000BBAE15 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4FB29D617F000BBAE15 /* ProfileViewModel.swift */; };
+		9C80B4FF29D619A300BBAE15 /* EditDoctorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B4FE29D619A300BBAE15 /* EditDoctorViewModel.swift */; };
+		9C80B50229D61A4A00BBAE15 /* HolidaySectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B50129D61A4A00BBAE15 /* HolidaySectionViewModel.swift */; };
+		9C80B50529D61AD000BBAE15 /* AddHolidayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B50429D61AD000BBAE15 /* AddHolidayViewModel.swift */; };
+		9C80B50829D61B9200BBAE15 /* AppointmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B50729D61B9200BBAE15 /* AppointmentsViewModel.swift */; };
+		9C80B50B29D61CA700BBAE15 /* CreateAppointmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B50A29D61CA700BBAE15 /* CreateAppointmentViewModel.swift */; };
+		9C80B50E29D61D4400BBAE15 /* FilterAppointmentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B50D29D61D4400BBAE15 /* FilterAppointmentsViewModel.swift */; };
+		9C80B51129D61DDE00BBAE15 /* AppointmentSectionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B51029D61DDE00BBAE15 /* AppointmentSectionsViewModel.swift */; };
+		9C80B51429D61E2800BBAE15 /* AppointmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B51329D61E2800BBAE15 /* AppointmentViewModel.swift */; };
+		9C80B51729D61E8500BBAE15 /* AppointmentDeleteButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B51629D61E8500BBAE15 /* AppointmentDeleteButtonViewModel.swift */; };
+		9C80B51A29D61EFE00BBAE15 /* UpcomingAppointmentRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C80B51929D61EFE00BBAE15 /* UpcomingAppointmentRowViewModel.swift */; };
 		A80561C526123AB8004C6D71 /* ApiHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80561C426123AB8004C6D71 /* ApiHandler.swift */; };
 		A80561D22612E26B004C6D71 /* CustomSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80561D12612E26B004C6D71 /* CustomSection.swift */; };
 		A80561D6261382C4004C6D71 /* AppointmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A80561D5261382C4004C6D71 /* AppointmentsView.swift */; };
@@ -36,7 +57,7 @@
 		A855CDA92649010400726E6F /* CalendarHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A855CDA82649010400726E6F /* CalendarHelper.swift */; };
 		A855CDAB265175D000726E6F /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A855CDAA265175D000726E6F /* AppState.swift */; };
 		A855CDAD2652ED4800726E6F /* EditDoctor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A855CDAC2652ED4800726E6F /* EditDoctor.swift */; };
-		A855CDBD2656B46000726E6F /* HolidaysList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A855CDBC2656B46000726E6F /* HolidaysList.swift */; };
+		A855CDBD2656B46000726E6F /* HolidaySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A855CDBC2656B46000726E6F /* HolidaySection.swift */; };
 		A855CDBF26596FF100726E6F /* BiometricsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A855CDBE26596FF100726E6F /* BiometricsSettingsView.swift */; };
 		A855CDC1265A677B00726E6F /* AddHoliday.swift in Sources */ = {isa = PBXBuildFile; fileRef = A855CDC0265A677B00726E6F /* AddHoliday.swift */; };
 		A878FDD72662477100A439F7 /* BiometricsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A878FDD62662477100A439F7 /* BiometricsHelper.swift */; };
@@ -94,6 +115,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C80B4DD29D6113100BBAE15 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		9C80B4E029D611BE00BBAE15 /* UnlockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockViewModel.swift; sourceTree = "<group>"; };
+		9C80B4E329D6121D00BBAE15 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		9C80B4E629D6133300BBAE15 /* SignInButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInButtonViewModel.swift; sourceTree = "<group>"; };
+		9C80B4E929D6144200BBAE15 /* PatientsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientsViewModel.swift; sourceTree = "<group>"; };
+		9C80B4EC29D614E000BBAE15 /* CreatePatientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePatientViewModel.swift; sourceTree = "<group>"; };
+		9C80B4EF29D615E200BBAE15 /* FilterPatientsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterPatientsViewModel.swift; sourceTree = "<group>"; };
+		9C80B4F229D6167200BBAE15 /* PatientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientViewModel.swift; sourceTree = "<group>"; };
+		9C80B4F529D616EB00BBAE15 /* PatientDeleteButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatientDeleteButtonViewModel.swift; sourceTree = "<group>"; };
+		9C80B4F829D6175D00BBAE15 /* EditPatientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPatientViewModel.swift; sourceTree = "<group>"; };
+		9C80B4FB29D617F000BBAE15 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		9C80B4FE29D619A300BBAE15 /* EditDoctorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDoctorViewModel.swift; sourceTree = "<group>"; };
+		9C80B50129D61A4A00BBAE15 /* HolidaySectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidaySectionViewModel.swift; sourceTree = "<group>"; };
+		9C80B50429D61AD000BBAE15 /* AddHolidayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHolidayViewModel.swift; sourceTree = "<group>"; };
+		9C80B50729D61B9200BBAE15 /* AppointmentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsViewModel.swift; sourceTree = "<group>"; };
+		9C80B50A29D61CA700BBAE15 /* CreateAppointmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAppointmentViewModel.swift; sourceTree = "<group>"; };
+		9C80B50D29D61D4400BBAE15 /* FilterAppointmentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterAppointmentsViewModel.swift; sourceTree = "<group>"; };
+		9C80B51029D61DDE00BBAE15 /* AppointmentSectionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentSectionsViewModel.swift; sourceTree = "<group>"; };
+		9C80B51329D61E2800BBAE15 /* AppointmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentViewModel.swift; sourceTree = "<group>"; };
+		9C80B51629D61E8500BBAE15 /* AppointmentDeleteButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentDeleteButtonViewModel.swift; sourceTree = "<group>"; };
+		9C80B51929D61EFE00BBAE15 /* UpcomingAppointmentRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpcomingAppointmentRowViewModel.swift; sourceTree = "<group>"; };
 		A80561C426123AB8004C6D71 /* ApiHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiHandler.swift; sourceTree = "<group>"; };
 		A80561D12612E26B004C6D71 /* CustomSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSection.swift; sourceTree = "<group>"; };
 		A80561D5261382C4004C6D71 /* AppointmentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentsView.swift; sourceTree = "<group>"; };
@@ -130,7 +172,7 @@
 		A855CDAC2652ED4800726E6F /* EditDoctor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDoctor.swift; sourceTree = "<group>"; };
 		A855CDB22654288300726E6F /* NeuroProMedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeuroProMedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A855CDB62654288300726E6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A855CDBC2656B46000726E6F /* HolidaysList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidaysList.swift; sourceTree = "<group>"; };
+		A855CDBC2656B46000726E6F /* HolidaySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidaySection.swift; sourceTree = "<group>"; };
 		A855CDBE26596FF100726E6F /* BiometricsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsSettingsView.swift; sourceTree = "<group>"; };
 		A855CDC0265A677B00726E6F /* AddHoliday.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHoliday.swift; sourceTree = "<group>"; };
 		A878FDD62662477100A439F7 /* BiometricsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsHelper.swift; sourceTree = "<group>"; };
@@ -199,17 +241,206 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A80561E02619B86A004C6D71 /* Patients */ = {
+		9C80B4DC29D6110B00BBAE15 /* ContentView */ = {
+			isa = PBXGroup;
+			children = (
+				A8F74C432605DA3E006722BB /* ContentView.swift */,
+				9C80B4DD29D6113100BBAE15 /* ContentViewModel.swift */,
+			);
+			path = ContentView;
+			sourceTree = "<group>";
+		};
+		9C80B4DF29D6118F00BBAE15 /* UnlockView */ = {
+			isa = PBXGroup;
+			children = (
+				A84395F52676A13B001CE302 /* UnlockView.swift */,
+				9C80B4E029D611BE00BBAE15 /* UnlockViewModel.swift */,
+			);
+			path = UnlockView;
+			sourceTree = "<group>";
+		};
+		9C80B4E229D611FF00BBAE15 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				A84395F12673570F001CE302 /* MainView.swift */,
+				9C80B4E329D6121D00BBAE15 /* MainViewModel.swift */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		9C80B4E529D6130900BBAE15 /* SignInButton */ = {
+			isa = PBXGroup;
+			children = (
+				A84395FB267E1FC3001CE302 /* SignInButton.swift */,
+				9C80B4E629D6133300BBAE15 /* SignInButtonViewModel.swift */,
+			);
+			path = SignInButton;
+			sourceTree = "<group>";
+		};
+		9C80B4E829D6141400BBAE15 /* PatientsView */ = {
 			isa = PBXGroup;
 			children = (
 				A8F74C5F2605F969006722BB /* PatientsView.swift */,
-				A8CBC0CE2619CF2A00F4863F /* PatientRow.swift */,
+				9C80B4E929D6144200BBAE15 /* PatientsViewModel.swift */,
+			);
+			path = PatientsView;
+			sourceTree = "<group>";
+		};
+		9C80B4EB29D614B100BBAE15 /* CreatePatient */ = {
+			isa = PBXGroup;
+			children = (
 				A8F74C6826064D5C006722BB /* CreatePatient.swift */,
+				9C80B4EC29D614E000BBAE15 /* CreatePatientViewModel.swift */,
+			);
+			path = CreatePatient;
+			sourceTree = "<group>";
+		};
+		9C80B4EE29D6159B00BBAE15 /* FilterPatients */ = {
+			isa = PBXGroup;
+			children = (
 				A8CBC0D22619D28A00F4863F /* FilterPatients.swift */,
+				9C80B4EF29D615E200BBAE15 /* FilterPatientsViewModel.swift */,
+			);
+			path = FilterPatients;
+			sourceTree = "<group>";
+		};
+		9C80B4F129D6164400BBAE15 /* PatientView */ = {
+			isa = PBXGroup;
+			children = (
 				A8F74C6526064517006722BB /* PatientView.swift */,
-				A8CBC0DB261B887A00F4863F /* PatientDetails.swift */,
+				9C80B4F229D6167200BBAE15 /* PatientViewModel.swift */,
+			);
+			path = PatientView;
+			sourceTree = "<group>";
+		};
+		9C80B4F429D6169F00BBAE15 /* PatientDeleteButton */ = {
+			isa = PBXGroup;
+			children = (
 				A8CBC0DF261B895500F4863F /* PatientDeleteButton.swift */,
+				9C80B4F529D616EB00BBAE15 /* PatientDeleteButtonViewModel.swift */,
+			);
+			path = PatientDeleteButton;
+			sourceTree = "<group>";
+		};
+		9C80B4F729D6171800BBAE15 /* EditPatient */ = {
+			isa = PBXGroup;
+			children = (
 				A8F74C6F26066346006722BB /* EditPatient.swift */,
+				9C80B4F829D6175D00BBAE15 /* EditPatientViewModel.swift */,
+			);
+			path = EditPatient;
+			sourceTree = "<group>";
+		};
+		9C80B4FA29D617B900BBAE15 /* ProfileView */ = {
+			isa = PBXGroup;
+			children = (
+				A82CA27E2634752F006DFB10 /* ProfileView.swift */,
+				9C80B4FB29D617F000BBAE15 /* ProfileViewModel.swift */,
+			);
+			path = ProfileView;
+			sourceTree = "<group>";
+		};
+		9C80B4FD29D6196F00BBAE15 /* EditDoctor */ = {
+			isa = PBXGroup;
+			children = (
+				A855CDAC2652ED4800726E6F /* EditDoctor.swift */,
+				9C80B4FE29D619A300BBAE15 /* EditDoctorViewModel.swift */,
+			);
+			path = EditDoctor;
+			sourceTree = "<group>";
+		};
+		9C80B50029D61A0800BBAE15 /* HolidaySection */ = {
+			isa = PBXGroup;
+			children = (
+				A855CDBC2656B46000726E6F /* HolidaySection.swift */,
+				9C80B50129D61A4A00BBAE15 /* HolidaySectionViewModel.swift */,
+			);
+			path = HolidaySection;
+			sourceTree = "<group>";
+		};
+		9C80B50329D61A9600BBAE15 /* AddHoliday */ = {
+			isa = PBXGroup;
+			children = (
+				A855CDC0265A677B00726E6F /* AddHoliday.swift */,
+				9C80B50429D61AD000BBAE15 /* AddHolidayViewModel.swift */,
+			);
+			path = AddHoliday;
+			sourceTree = "<group>";
+		};
+		9C80B50629D61B6700BBAE15 /* AppointmentsView */ = {
+			isa = PBXGroup;
+			children = (
+				A80561D5261382C4004C6D71 /* AppointmentsView.swift */,
+				9C80B50729D61B9200BBAE15 /* AppointmentsViewModel.swift */,
+			);
+			path = AppointmentsView;
+			sourceTree = "<group>";
+		};
+		9C80B50929D61C6400BBAE15 /* CreateAppointment */ = {
+			isa = PBXGroup;
+			children = (
+				A8CBC0D5261A1EF500F4863F /* CreateAppointment.swift */,
+				9C80B50A29D61CA700BBAE15 /* CreateAppointmentViewModel.swift */,
+			);
+			path = CreateAppointment;
+			sourceTree = "<group>";
+		};
+		9C80B50C29D61D0000BBAE15 /* FilterAppointments */ = {
+			isa = PBXGroup;
+			children = (
+				A8CBC0E72621CDBE00F4863F /* FilterAppointments.swift */,
+				9C80B50D29D61D4400BBAE15 /* FilterAppointmentsViewModel.swift */,
+			);
+			path = FilterAppointments;
+			sourceTree = "<group>";
+		};
+		9C80B50F29D61DB200BBAE15 /* AppointmentSections */ = {
+			isa = PBXGroup;
+			children = (
+				A8992A2A262DEFB5002C9115 /* AppointmentSections.swift */,
+				9C80B51029D61DDE00BBAE15 /* AppointmentSectionsViewModel.swift */,
+			);
+			path = AppointmentSections;
+			sourceTree = "<group>";
+		};
+		9C80B51229D61DF800BBAE15 /* AppointmentView */ = {
+			isa = PBXGroup;
+			children = (
+				A8F74C7726079445006722BB /* AppointmentView.swift */,
+				9C80B51329D61E2800BBAE15 /* AppointmentViewModel.swift */,
+			);
+			path = AppointmentView;
+			sourceTree = "<group>";
+		};
+		9C80B51529D61E4B00BBAE15 /* AppointmentDeleteButton */ = {
+			isa = PBXGroup;
+			children = (
+				A82CA27826346E35006DFB10 /* AppointmentDeleteButton.swift */,
+				9C80B51629D61E8500BBAE15 /* AppointmentDeleteButtonViewModel.swift */,
+			);
+			path = AppointmentDeleteButton;
+			sourceTree = "<group>";
+		};
+		9C80B51829D61EC400BBAE15 /* UpcommingAppointmentRow */ = {
+			isa = PBXGroup;
+			children = (
+				A878FDDC2663F6FB00A439F7 /* UpcomingAppointmentRow.swift */,
+				9C80B51929D61EFE00BBAE15 /* UpcomingAppointmentRowViewModel.swift */,
+			);
+			path = UpcommingAppointmentRow;
+			sourceTree = "<group>";
+		};
+		A80561E02619B86A004C6D71 /* Patients */ = {
+			isa = PBXGroup;
+			children = (
+				9C80B4E829D6141400BBAE15 /* PatientsView */,
+				A8CBC0CE2619CF2A00F4863F /* PatientRow.swift */,
+				9C80B4EB29D614B100BBAE15 /* CreatePatient */,
+				9C80B4EE29D6159B00BBAE15 /* FilterPatients */,
+				9C80B4F129D6164400BBAE15 /* PatientView */,
+				A8CBC0DB261B887A00F4863F /* PatientDetails.swift */,
+				9C80B4F429D6169F00BBAE15 /* PatientDeleteButton */,
+				9C80B4F729D6171800BBAE15 /* EditPatient */,
 				A8992A3E2631C6DE002C9115 /* PatientDetailsSection.swift */,
 			);
 			path = Patients;
@@ -218,20 +449,20 @@
 		A80561E12619B90B004C6D71 /* Appointments */ = {
 			isa = PBXGroup;
 			children = (
-				A80561D5261382C4004C6D71 /* AppointmentsView.swift */,
-				A8CBC0D5261A1EF500F4863F /* CreateAppointment.swift */,
-				A8CBC0E72621CDBE00F4863F /* FilterAppointments.swift */,
+				9C80B50629D61B6700BBAE15 /* AppointmentsView */,
+				9C80B50929D61C6400BBAE15 /* CreateAppointment */,
+				9C80B50C29D61D0000BBAE15 /* FilterAppointments */,
 				A8992A3B262F577B002C9115 /* AppointmentFormGroup.swift */,
 				A8992A502634110F002C9115 /* AppointmentDatesForm.swift */,
 				A8CBC0E2261B8BC400F4863F /* ServiceToggle.swift */,
 				A878FDD82662AC7800A439F7 /* NotificationAndCalendarPickers.swift */,
-				A8992A2A262DEFB5002C9115 /* AppointmentSections.swift */,
-				A8F74C7726079445006722BB /* AppointmentView.swift */,
+				9C80B50F29D61DB200BBAE15 /* AppointmentSections */,
+				9C80B51229D61DF800BBAE15 /* AppointmentView */,
 				A82CA27B26346F50006DFB10 /* AppointmentDetail.swift */,
-				A82CA27826346E35006DFB10 /* AppointmentDeleteButton.swift */,
+				9C80B51529D61E4B00BBAE15 /* AppointmentDeleteButton */,
 				A8992A35262E94A3002C9115 /* EditAppointment.swift */,
 				A80561E52619BAD8004C6D71 /* UpcomingAppointment.swift */,
-				A878FDDC2663F6FB00A439F7 /* UpcomingAppointmentRow.swift */,
+				9C80B51829D61EC400BBAE15 /* UpcommingAppointmentRow */,
 				A80561E92619BAFF004C6D71 /* PastAppointment.swift */,
 				A84396002680874F001CE302 /* PastAppointmentRow.swift */,
 			);
@@ -253,9 +484,9 @@
 		A80561E32619B9C7004C6D71 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A8F74C432605DA3E006722BB /* ContentView.swift */,
-				A84395F52676A13B001CE302 /* UnlockView.swift */,
-				A84395F12673570F001CE302 /* MainView.swift */,
+				9C80B4DC29D6110B00BBAE15 /* ContentView */,
+				9C80B4DF29D6118F00BBAE15 /* UnlockView */,
+				9C80B4E229D611FF00BBAE15 /* MainView */,
 				A84395FD267E2C25001CE302 /* Login */,
 				A80561E02619B86A004C6D71 /* Patients */,
 				A80561E12619B90B004C6D71 /* Appointments */,
@@ -284,12 +515,12 @@
 		A84395F0267356C7001CE302 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				A82CA27E2634752F006DFB10 /* ProfileView.swift */,
+				9C80B4FA29D617B900BBAE15 /* ProfileView */,
 				A82CA28126347BDA006DFB10 /* DoctorDetails.swift */,
 				A855CDBE26596FF100726E6F /* BiometricsSettingsView.swift */,
-				A855CDAC2652ED4800726E6F /* EditDoctor.swift */,
-				A855CDBC2656B46000726E6F /* HolidaysList.swift */,
-				A855CDC0265A677B00726E6F /* AddHoliday.swift */,
+				9C80B4FD29D6196F00BBAE15 /* EditDoctor */,
+				9C80B50029D61A0800BBAE15 /* HolidaySection */,
+				9C80B50329D61A9600BBAE15 /* AddHoliday */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -300,7 +531,7 @@
 				A878FDDE2666929300A439F7 /* LoginView.swift */,
 				A84395F7267E1BF8001CE302 /* SplashScreen.swift */,
 				A84395F9267E1E9C001CE302 /* LoginDoctorOption.swift */,
-				A84395FB267E1FC3001CE302 /* SignInButton.swift */,
+				9C80B4E529D6130900BBAE15 /* SignInButton */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -516,45 +747,64 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A855CDBD2656B46000726E6F /* HolidaysList.swift in Sources */,
+				A855CDBD2656B46000726E6F /* HolidaySection.swift in Sources */,
+				9C80B50529D61AD000BBAE15 /* AddHolidayViewModel.swift in Sources */,
 				A8F74C7826079445006722BB /* AppointmentView.swift in Sources */,
 				A84396012680874F001CE302 /* PastAppointmentRow.swift in Sources */,
 				A84395FF267E352D001CE302 /* ListButton.swift in Sources */,
 				A82CA2882638786F006DFB10 /* NotificationSchedule.swift in Sources */,
+				9C80B50829D61B9200BBAE15 /* AppointmentsViewModel.swift in Sources */,
 				A84395F42676862E001CE302 /* KeychainHelper.swift in Sources */,
 				A80561DC26163C32004C6D71 /* Service.swift in Sources */,
+				9C80B4FC29D617F000BBAE15 /* ProfileViewModel.swift in Sources */,
 				A8F74C6926064D5C006722BB /* CreatePatient.swift in Sources */,
 				A8CBC0DC261B887A00F4863F /* PatientDetails.swift in Sources */,
 				A8CBC0D32619D28A00F4863F /* FilterPatients.swift in Sources */,
+				9C80B4EA29D6144200BBAE15 /* PatientsViewModel.swift in Sources */,
 				A84395FA267E1E9C001CE302 /* LoginDoctorOption.swift in Sources */,
 				A84395F22673570F001CE302 /* MainView.swift in Sources */,
 				A80561D6261382C4004C6D71 /* AppointmentsView.swift in Sources */,
 				A8F74C6626064517006722BB /* PatientView.swift in Sources */,
 				A8992A54263419DC002C9115 /* DeleteButton.swift in Sources */,
+				9C80B4F029D615E200BBAE15 /* FilterPatientsViewModel.swift in Sources */,
 				A878FDDB2663901D00A439F7 /* AppLabels.swift in Sources */,
+				9C80B4F929D6175D00BBAE15 /* EditPatientViewModel.swift in Sources */,
+				9C80B50229D61A4A00BBAE15 /* HolidaySectionViewModel.swift in Sources */,
+				9C80B4F329D6167200BBAE15 /* PatientViewModel.swift in Sources */,
 				A8CBC0CF2619CF2A00F4863F /* PatientRow.swift in Sources */,
 				A8F74C602605F969006722BB /* PatientsView.swift in Sources */,
+				9C80B4E729D6133300BBAE15 /* SignInButtonViewModel.swift in Sources */,
 				A878FDD92662AC7800A439F7 /* NotificationAndCalendarPickers.swift in Sources */,
 				A855CDC1265A677B00726E6F /* AddHoliday.swift in Sources */,
 				A8CBC0E3261B8BC400F4863F /* ServiceToggle.swift in Sources */,
+				9C80B51A29D61EFE00BBAE15 /* UpcomingAppointmentRowViewModel.swift in Sources */,
 				A8F74C742607634B006722BB /* Appointment.swift in Sources */,
+				9C80B4ED29D614E000BBAE15 /* CreatePatientViewModel.swift in Sources */,
 				A8992A512634110F002C9115 /* AppointmentDatesForm.swift in Sources */,
 				A84395F62676A13B001CE302 /* UnlockView.swift in Sources */,
 				A878FDDD2663F6FB00A439F7 /* UpcomingAppointmentRow.swift in Sources */,
 				A80561EA2619BAFF004C6D71 /* PastAppointment.swift in Sources */,
 				A8F74C632605F98C006722BB /* Patient.swift in Sources */,
+				9C80B50E29D61D4400BBAE15 /* FilterAppointmentsViewModel.swift in Sources */,
 				A8992A2B262DEFB5002C9115 /* AppointmentSections.swift in Sources */,
 				A8F74C442605DA3E006722BB /* ContentView.swift in Sources */,
 				A8992A3C262F577B002C9115 /* AppointmentFormGroup.swift in Sources */,
+				9C80B4F629D616EB00BBAE15 /* PatientDeleteButtonViewModel.swift in Sources */,
 				A80561D22612E26B004C6D71 /* CustomSection.swift in Sources */,
 				A8CBC0E0261B895500F4863F /* PatientDeleteButton.swift in Sources */,
 				A855CDBF26596FF100726E6F /* BiometricsSettingsView.swift in Sources */,
+				9C80B50B29D61CA700BBAE15 /* CreateAppointmentViewModel.swift in Sources */,
+				9C80B51429D61E2800BBAE15 /* AppointmentViewModel.swift in Sources */,
+				9C80B4FF29D619A300BBAE15 /* EditDoctorViewModel.swift in Sources */,
 				A855CDAB265175D000726E6F /* AppState.swift in Sources */,
 				A80561C526123AB8004C6D71 /* ApiHandler.swift in Sources */,
+				9C80B4E429D6121D00BBAE15 /* MainViewModel.swift in Sources */,
 				A8CBC0D6261A1EF500F4863F /* CreateAppointment.swift in Sources */,
 				A82CA27926346E35006DFB10 /* AppointmentDeleteButton.swift in Sources */,
 				A8992A39262E956D002C9115 /* AppointmentHelper.swift in Sources */,
 				A82CA27C26346F50006DFB10 /* AppointmentDetail.swift in Sources */,
+				9C80B51729D61E8500BBAE15 /* AppointmentDeleteButtonViewModel.swift in Sources */,
+				9C80B51129D61DDE00BBAE15 /* AppointmentSectionsViewModel.swift in Sources */,
 				A8992A36262E94A3002C9115 /* EditAppointment.swift in Sources */,
 				A82CA27F2634752F006DFB10 /* ProfileView.swift in Sources */,
 				A878FDDF2666929300A439F7 /* LoginView.swift in Sources */,
@@ -562,10 +812,12 @@
 				A84395FC267E1FC3001CE302 /* SignInButton.swift in Sources */,
 				A8F74C7026066346006722BB /* EditPatient.swift in Sources */,
 				A8FA4A82262C244F00C594EC /* Extensions.swift in Sources */,
+				9C80B4E129D611BE00BBAE15 /* UnlockViewModel.swift in Sources */,
 				A855CDA92649010400726E6F /* CalendarHelper.swift in Sources */,
 				A8F74C422605DA3E006722BB /* NeuroProMedApp.swift in Sources */,
 				A82CA28226347BDA006DFB10 /* DoctorDetails.swift in Sources */,
 				A80561D92614451C004C6D71 /* Doctor.swift in Sources */,
+				9C80B4DE29D6113100BBAE15 /* ContentViewModel.swift in Sources */,
 				A80561E62619BAD8004C6D71 /* UpcomingAppointment.swift in Sources */,
 				A8992A3F2631C6DE002C9115 /* PatientDetailsSection.swift in Sources */,
 				A878FDD72662477100A439F7 /* BiometricsHelper.swift in Sources */,

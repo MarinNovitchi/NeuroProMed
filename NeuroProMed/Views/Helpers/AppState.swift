@@ -9,6 +9,7 @@ import Foundation
 
 
 /// Class with a published selectedAppointmentID to be used when the application is opened via a notification tap and the appointmentView must be shown
+@MainActor
 class AppState: ObservableObject {
     
     static let shared = AppState()

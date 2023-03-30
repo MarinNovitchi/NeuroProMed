@@ -26,35 +26,49 @@ struct AppointmentFormGroup: View {
         }
         appointmentData.doctorID = newValue
     }
-
-    var body: some View {
-        Group {
-            CustomSection(header: Text(label(.appointmentDetails))){
-                if appState.isUserDoctor {
-                    Picker(selection: Binding<UUID>(
-                        get: { appointmentData.patientID ?? UUID() },
-                        set: { appointmentData.patientID = $0 }
-                    ), label: Text(label(.patient))) {
-                        ForEach(appState.patients.patients, id: \.patientID) {
-                            Text($0.title)
-                        }
-                    }
-                }
+    
+    var entitiesPicker: some View {
+        CustomSection(header: Text(label(.appointmentDetails))){
+            if appState.isUserDoctor {
                 Picker(selection: Binding<UUID>(
-                    get: { appointmentData.doctorID ?? UUID() },
-                    set: doctorPickerSet
-                ), label: Text(label(.doctor))) {
-                    ForEach(appState.doctors.doctors.filter{ $0.isDoctor }, id: \.doctorID) { doctor in
-                        HStack {
-                            Text(doctor.title)
-                                .foregroundColor(.primary)
-                                .layoutPriority(1)
-                            Text(doctor.specialty)
-                                .foregroundColor(.secondary)
-                        }
+                    get: { appointmentData.patientID ?? UUID() },
+                    set: { appointmentData.patientID = $0 }
+                ), label: Text(label(.patient))) {
+                    ForEach(appState.patients.patients, id: \.patientID) {
+                        Text($0.title)
                     }
                 }
             }
+            Picker(selection: Binding<UUID>(
+                get: { appointmentData.doctorID ?? UUID() },
+                set: doctorPickerSet
+            ), label: Text(label(.doctor))) {
+                ForEach(appState.doctors.doctors.filter{ $0.isDoctor }, id: \.doctorID) { doctor in
+                    HStack {
+                        Text(doctor.title)
+                            .foregroundColor(.primary)
+                            .layoutPriority(1)
+                        Text(doctor.specialty)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var entitiesPickerView: some View {
+        if #available(iOS 16.0, *) {
+            entitiesPicker
+                .pickerStyle(.navigationLink)
+        } else {
+            entitiesPicker
+        }
+    }
+
+    var body: some View {
+        Group {
+            entitiesPickerView
             AppointmentDatesForm(
                 appointmentData: $appointmentData,
                 isUsedByFilter: isUsedByFilter,
