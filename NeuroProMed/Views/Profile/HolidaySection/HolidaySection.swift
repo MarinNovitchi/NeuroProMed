@@ -28,11 +28,12 @@ struct HolidaySection: View {
                     CustomSection(header: Text(viewModel.sectionHeader(y: yearIndex, m: monthIndex))) {
                         ForEach(viewModel.unavailableDatesfilteredBy(year: yearIndex, month: monthIndex, from: doctorData.unavailability), id: \.self) { unavailableDate in
                             HStack {
-                                Text(unavailableDate, style: .date).deleteDisabled(!isSectionEditable)
+                                Text(unavailableDate, style: .date)
                                     .foregroundColor(.primary)
                                 Text(viewModel.getDayOfWeek(from: unavailableDate))
                                     .foregroundColor(.secondary)
                             }
+                            .deleteDisabled(!isSectionEditable)
                         }
                         .onDelete(perform: { indexSet in
                             removeHolidays(year: yearIndex, month: monthIndex, at: indexSet)

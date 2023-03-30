@@ -11,6 +11,16 @@ struct ProfileView: View {
     
     @StateObject var viewModel: ViewModel
     @ObservedObject var appState: AppState
+    
+    var holidayList: some View {
+        List {
+            HolidaySection(
+                viewModel: .init(),
+                doctorData: $viewModel.doctorData,
+                isSectionEditable: false)
+        }
+        .navigationTitle(label(.holidays))
+    }
 
     var body: some View {
         NavigationView {
@@ -18,12 +28,10 @@ struct ProfileView: View {
                 if viewModel.isUserDoctor {
                     DoctorDetails(doctor: viewModel.doctor)
                     if viewModel.hasUnavailability {
-                        NavigationLink(String(format: label(.holidayAmount), viewModel.unavailabilityCount), destination:
-                            List {
-                                HolidaySection(viewModel: .init(), doctorData: $viewModel.doctorData, isSectionEditable: false)
-                            }
-                            .navigationTitle(label(.holidays))
-                        )
+                        NavigationLink(
+                            String(format: label(.holidayAmount), viewModel.unavailabilityCount),
+                            destination: holidayList,
+                            isActive: $viewModel.isHolidayListDisplayed)
                     } else {
                         Text(String(format: label(.holidayAmount), viewModel.doctorData.unavailability.count))
                     }
