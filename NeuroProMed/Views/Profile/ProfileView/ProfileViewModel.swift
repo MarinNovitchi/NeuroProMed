@@ -33,6 +33,14 @@ extension ProfileView {
         @Published var isShowingAlert = false
         @Published var activeSheet: ActiveSheet?
         
+        @Published var isHolidayListDisplayed = false {
+            willSet {
+                if newValue {
+                    doctorData = doctor.data
+                }
+            }
+        }
+        
         func deleteKeyChainCredentials() {
             
             let generator = UINotificationFeedbackGenerator()
@@ -58,7 +66,7 @@ extension ProfileView {
         }
         
         var unavailabilityCount: Int {
-            doctorData.unavailability.count
+            doctor.unavailability.count
         }
         
         var pageTitle: String {
