@@ -19,24 +19,12 @@ struct ApiHandler {
     ///   - endpoint: API endpoint
     ///   - body: Request body (for POST request type)
     ///   - completion: Action to be performed once the response is received
-    static func request<T: Codable, G: Codable>(_ type: HttpRequestType, at endpoint: String, body: T, completion: @escaping (Result<G, NetworkError>) -> Void) {
-        //TODO: make the T optional
-        
-        let potentialRequest = newURLRequest(of: type, at: endpoint)
-        guard var request = potentialRequest else {
-            completion(.failure(.badURL))
-            return
-        }
-        
+    static func request<T: Codable, G: Codable>(_ type: HttpRequestType, at endpoint: String, body: T) async throws -> G {
+        var request = try newURLRequest(of: type, at: endpoint)
         if type == .POST {
-            let appended = append(body: body, to: &request)
-            guard appended else {
-                completion(.failure(.encodingIssue))
-                return
-            }
+            try append(body, to: &request)
         }
-        
-        send(request, completion: completion)
+        return try await sendRequest(request)
     }
     
     /// Creates a URL request containing the URL itself and the request type
@@ -44,9 +32,9 @@ struct ApiHandler {
     ///   - type: HTTP request type (e.g. GET, POST)
     ///   - endpoint: API endpoint
     /// - Returns: URLRequest object
-    private static func newURLRequest(of type: HttpRequestType, at endpoint: String) -> URLRequest? {
+    private static func newURLRequest(of type: HttpRequestType, at endpoint: String) throws -> URLRequest {
         guard let url = URL(string: baseURL + endpoint) else {
-            return nil
+            throw AppError.badURL
         }
         var request = URLRequest(url: url)
         request.httpMethod = type.rawValue
@@ -58,13 +46,12 @@ struct ApiHandler {
     ///   - body: Body to be added
     ///   - request: URLRequest object
     /// - Returns: A boolean value indicating whether the body was successfully appended to the URL request
-    private static func append<T: Codable>(body: T, to request: inout URLRequest) -> Bool {
+    private static func append<T: Codable>(_ body: T, to request: inout URLRequest) throws {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         guard let encoded = try? JSONEncoder().encode(body.self) else {
-            return false
+            throw AppError.encodingIssue("Could not encode \(type(of: T.self))")
         }
         request.httpBody = encoded
-        return true
     }
     
     /// Checks if the
@@ -72,7 +59,7 @@ struct ApiHandler {
     ///   - data: Data received from the server
     ///   - completion: Action to be performed after confirming the presence of an error
     /// - Returns: A boolean value indicating whether an error was received or not
-    private static func checkForServerError<G: Codable>(data: Data, completion: @escaping (Result<G, NetworkError>) -> Void) -> Bool {
+    private static func checkForServerError<G: Codable>(data: Data, completion: @escaping (Result<G, AppError>) -> Void) -> Bool {
         var isErrorPresent = false
         if let apiResponse = try? JSONDecoder().decode(ApiResponse.self, from: data) {
             if apiResponse.error {
@@ -83,33 +70,20 @@ struct ApiHandler {
         return isErrorPresent
     }
     
-    /// Send the URL request to the server
-    /// - Parameters:
-    ///   - request: URLRequest object
-    ///   - completion: Action to be performed after confirming the presence of an error
-    private static func send<G: Codable>(_ request: URLRequest, completion: @escaping (Result<G, NetworkError>) -> Void) {
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            DispatchQueue.main.async {
-                if let data = data {
+    private static func sendRequest<T>(_ request: URLRequest) async throws -> T where T: Codable {
 
-                    let isErrorPresent = checkForServerError(data: data, completion: completion)
-                    
-                    if !isErrorPresent {
-                        if let decodedResponse = try? JSONDecoder().decode(G.self, from: data) {
-                            completion(.success(decodedResponse))
-                        } else {
-                            completion(.failure(.decodingIssue))
-                        }
-                    }
-                    
-                } else if error != nil {
-                    completion(.failure(.requestFailed))
-                } else {
-                    completion(.failure(.unknown))
-                }
-            }
-        }.resume()
+        let (data, response) = try await URLSession.shared.data(for: request)
+        if
+            let networkResponse = response as? HTTPURLResponse,
+            networkResponse.statusCode > 399 {
+            throw AppError.serverError("Error \(networkResponse.statusCode): \(networkResponse.description)")
+        }
+
+        do {
+            return try JSONDecoder().decode(T.self, from: data)
+        } catch {
+            throw AppError.decodingIssue("Could not decode \(type(of: T.self))")
+        }
     }
 }
 
@@ -118,9 +92,9 @@ enum HttpRequestType: String {
 }
 
 /// Network error types
-enum NetworkError: Error {
+enum AppError: Error {
     
-    case unknown, badURL, encodingIssue, decodingIssue, requestFailed, serverError(String)
+    case unknown, badURL, encodingIssue(String), decodingIssue(String), requestFailed, serverError(String)
     
     /// Provides a network error message
     /// - Returns: Error message

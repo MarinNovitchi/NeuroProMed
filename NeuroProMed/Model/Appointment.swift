@@ -104,16 +104,16 @@ extension Appointment {
 
 
 extension Appointment {
-    func create(completion: @escaping (Result<ApiResponse, NetworkError>) -> Void) {
-        ApiHandler.request(.POST, at: "/createappointment", body: self, completion: completion)
+    func create() async throws -> ApiResponse {
+        try await ApiHandler.request(.POST, at: "/createappointment", body: self)
     }
     
-    func update(completion: @escaping (Result<ApiResponse, NetworkError>) -> Void) {
-        ApiHandler.request(.POST, at: "/editappointment", body: self, completion: completion)
+    func update() async throws -> ApiResponse {
+        try await ApiHandler.request(.POST, at: "/editappointment", body: self)
     }
     
-    func delete(completion: @escaping (Result<ApiResponse, NetworkError>) -> Void) {
-        ApiHandler.request(.DELETE, at: "/deleteappointment/\(appointmentID)", body: self, completion: completion)
+    func delete() async throws -> ApiResponse {
+        try await ApiHandler.request(.DELETE, at: "/deleteappointment/\(appointmentID)", body: self)
     }
 }
 
@@ -127,11 +127,11 @@ class Appointments: ObservableObject {
     @Published var appointments: [Appointment]
 
     
-    func load(completion: @escaping (Result<[Appointment], NetworkError>) -> Void) {
-        ApiHandler.request(.GET, at: "/appointments", body: self.appointments, completion: completion)
+    func load() async throws -> [Appointment] {
+        try await ApiHandler.request(.GET, at: "/appointments", body: appointments)
     }
     
-    func filterAppointments(using filterData: Appointment.AppointmentProperties, completion: @escaping (Result<[Appointment], NetworkError>) -> Void) {
-        ApiHandler.request(.POST, at: "/searchappointments", body: filterData, completion: completion)
+    func filterAppointments(using filterData: Appointment.AppointmentProperties) async throws -> [Appointment] {
+        try await ApiHandler.request(.POST, at: "/searchappointments", body: filterData)
     }
 }

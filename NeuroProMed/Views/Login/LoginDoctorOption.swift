@@ -8,22 +8,22 @@
 import SwiftUI
 
 struct LoginDoctorOption: View {
-    
-    @Binding var isUserDoctor: Bool
+
     @Binding var doctorID: String
+    @ObservedObject var appState: AppState
     
     var body: some View {
         Group {
-            Button(action: {
+            Button {
                 withAnimation {
-                    isUserDoctor.toggle()
+                    appState.isUserDoctor.toggle()
                 }
-            }) {
-                Text(isUserDoctor ? label(.loginAsPatient) : label(.loginAsDoctor))
+            } label: {
+                Text(appState.isUserDoctor ? label(.loginAsPatient) : label(.loginAsDoctor))
                     .foregroundColor(.accentColor)
                     .padding(.bottom, 15)
             }
-            if (isUserDoctor) {
+            if appState.isUserDoctor {
                 TextField("Doctor ID", text: $doctorID)
                     .padding([.leading, .bottom, .trailing], 15)
                     .transition(.move(edge: .leading))
@@ -34,6 +34,6 @@ struct LoginDoctorOption: View {
 
 struct LoginDoctorOption_Previews: PreviewProvider {
     static var previews: some View {
-        LoginDoctorOption(isUserDoctor: .constant(true), doctorID: .constant(""))
+        LoginDoctorOption(doctorID: .constant("id"), appState: .shared)
     }
 }

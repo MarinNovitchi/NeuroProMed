@@ -9,11 +9,7 @@ import Security
 import SwiftUI
 
 struct LoginView: View {
-    
-    @Binding var isAuthenticated: Bool
-    @Binding var isUserDoctor: Bool
-    @Binding var userID: UUID
-    
+
     @State private var doctorID = ""
     
     var body: some View {
@@ -21,12 +17,8 @@ struct LoginView: View {
             Spacer()
             VStack {
                 SplashScreen()
-                LoginDoctorOption(isUserDoctor: $isUserDoctor, doctorID: $doctorID)
-                SignInButton(
-                    isAuthenticated: $isAuthenticated,
-                    isUserDoctor: $isUserDoctor,
-                    doctorID: $doctorID,
-                    userID: $userID)
+                LoginDoctorOption(doctorID: $doctorID, appState: .shared)
+                SignInButton(doctorID: $doctorID, viewModel: .init(), appState: .shared)
                 Spacer()
             }
             Spacer()
@@ -36,7 +28,7 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView(isAuthenticated: .constant(false), isUserDoctor: .constant(false), userID: .constant(UUID()))
+        LoginView()
     }
 }
 

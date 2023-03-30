@@ -9,12 +9,9 @@ import SwiftUI
 
 struct AppointmentDatesForm: View {
     
-    @ObservedObject var appointments: Appointments
-    @ObservedObject var doctors: Doctors
-    
     @Binding var appointmentData: Appointment.AppointmentProperties
     let isUsedByFilter: Bool
-    
+    @ObservedObject var appState: AppState
     @State private var chosenDate = Date()
     @State private var chosenTime = "08:00"
     @State private var appointmentAvailability: [Date: [String]] = [Date: [String]]()
@@ -37,12 +34,10 @@ struct AppointmentDatesForm: View {
     }
     
     func prepareDateAndTimePickers() {
-        guard let doctor = doctors.doctors.first(where: { $0.doctorID == appointmentData.doctorID }) else {
-            return
-        }
+        guard let doctor = appState.doctors.doctors.first(where: { $0.doctorID == appointmentData.doctorID }) else { return }
         
         let helper = AppointmentHelper()
-        appointmentAvailability = helper.computeDoctorAvailability(for: doctor, from: appointments.appointments)
+        appointmentAvailability = helper.computeDoctorAvailability(for: doctor, from: appState.appointments.appointments)
         
         if let unwrappedDate = appointmentData.appointmentDate {
             chosenTime = helper.getTimeSlot(from: unwrappedDate)
@@ -104,10 +99,9 @@ struct AppointmentDatesForm: View {
 struct AppointmentDatesForm_Previews: PreviewProvider {
     static var previews: some View {
         AppointmentDatesForm(
-            appointments: Appointments(),
-            doctors: Doctors(),
             appointmentData: .constant(Appointment.example),
-            isUsedByFilter: false
+            isUsedByFilter: false,
+            appState: .shared
         )
     }
 }

@@ -148,16 +148,16 @@ extension Patient {
 
 extension Patient {
     
-    func create(completion: @escaping (Result<ApiResponse, NetworkError>) -> Void) {
-        ApiHandler.request(.POST, at: "/addpatient", body: self, completion: completion)
+    func create() async throws -> ApiResponse {
+        try await ApiHandler.request(.POST, at: "/addpatient", body: self)
     }
     
-    func update(completion: @escaping (Result<ApiResponse, NetworkError>) -> Void) {
-        ApiHandler.request(.POST, at: "/editpatient", body: self, completion: completion)
+    func update() async throws -> ApiResponse {
+        try await ApiHandler.request(.POST, at: "/editpatient", body: self)
     }
     
-    func delete(completion: @escaping (Result<ApiResponse, NetworkError>) -> Void) {
-        ApiHandler.request(.DELETE, at: "/deletepatient/\(patientID)", body: self, completion: completion)
+    func delete() async throws -> ApiResponse {
+        try await ApiHandler.request(.DELETE, at: "/deletepatient/\(patientID)", body: self)
     }
 }
 
@@ -171,12 +171,12 @@ class Patients: ObservableObject {
     
     @Published var patients: [Patient]
 
-    func load(completion: @escaping (Result<[Patient], NetworkError>) -> Void) {
-        ApiHandler.request(.GET, at: "/patients", body: self.patients, completion: completion)
+    func load() async throws -> [Patient] {
+        try await ApiHandler.request(.GET, at: "/patients", body: patients)
     }
     
-    func filterPatients(using filterData: Patient.PatientProperties, completion: @escaping (Result<[Patient], NetworkError>) -> Void) {
-        ApiHandler.request(.POST, at: "/searchpatients", body: filterData, completion: completion)
+    func filterPatients(using filterData: Patient.PatientProperties) async throws -> [Patient] {
+        try await ApiHandler.request(.POST, at: "/searchpatients", body: filterData)
     }
     
 }
