@@ -20,27 +20,48 @@ struct EditAppointment: View {
     @ObservedObject var appState: AppState
     
     @State private var alertMessage = ""
+    @State private var isShowingErrorAlert = false
+    
     @State private var isShowingAlert = false
+    
+    func validatePriceAndSave() {
+        if priceHasChanged {
+            alertMessage = "The price for one of the services has changed. Are you sure you want to save?"
+            isShowingAlert = true
+        } else {
+            saveChanges()
+        }
+    }
+    
+    private var priceHasChanged: Bool {
+        for savedService in appointment.appointmentServices {
+            let currentService = appState.services.services.first { $0.serviceID == savedService.serviceID }
+            if currentService?.price != savedService.price {
+                return true
+            }
+        }
+        return false
+    }
     
     func saveChanges() {
         Task {
             let generator = UINotificationFeedbackGenerator()
             do {
-                appointment.updateAppointment(using: appointmentData)
+                appointment.updateAppointment(using: appointmentData, currentServices: appState.services.services)
                 let response = try await appointment.update()
                 guard !response.error else {
                     let error = AppError.serverError(response.message ?? "Unknown message")
-                    error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+                    error.trigger(with: generator, &isShowingErrorAlert, message: &alertMessage)
                     return
                 }
                 generator.notificationOccurred(.success)
                 updateNotificationAndCalendar(for: appointment)
                 dismiss()
             } catch let error as AppError  {
-                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+                error.trigger(with: generator, &isShowingErrorAlert, message: &alertMessage)
             } catch {
                 let error = AppError.unknown
-                error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+                error.trigger(with: generator, &isShowingErrorAlert, message: &alertMessage)
             }
         }
     }
@@ -83,10 +104,17 @@ struct EditAppointment: View {
             .navigationTitle(label(.editAppointment))
             .navigationBarItems(
                 leading: Button(label(.cancel)) { dismiss() },
-                trailing: Button(label(.save), action: saveChanges).disabled(!isAppointmentValid)
+                trailing: Button(label(.save), action: validatePriceAndSave).disabled(!isAppointmentValid)
             )
-            .alert(isPresented: $isShowingAlert) {
+            .alert(isPresented: $isShowingErrorAlert) {
                 Alert(title: Text(label(.error)), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
+            .alert(isPresented: $isShowingAlert) {
+                Alert(
+                    title: Text("Warning"),
+                    message: Text(alertMessage),
+                    primaryButton: .default(Text("OK"), action: saveChanges),
+                    secondaryButton: .cancel())
             }
     }
 }

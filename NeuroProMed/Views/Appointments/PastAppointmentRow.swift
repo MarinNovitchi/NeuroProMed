@@ -16,8 +16,8 @@ struct PastAppointmentRow: View {
     let isPatientPerspective: Bool
     
     var filteredServices: [Service] {
-        appState.services.services.filter {
-            appointment.services.contains($0.serviceID)
+        appState.services.services.filter { service in
+            appointment.appointmentServices.contains { $0.serviceID == service.serviceID }
         }
     }
     

@@ -9,12 +9,12 @@ import Foundation
 
 class Appointment: Codable, Comparable, Identifiable, ObservableObject {
         
-    init(appointmentDate: Date, doctorID: UUID, patientID: UUID, services: [UUID]) {
+    init(appointmentDate: Date, doctorID: UUID, patientID: UUID, services: [AppointmentService]) {
         self.appointmentID = UUID()
         self.appointmentDate = appointmentDate
         self.doctorID = doctorID
         self.patientID = patientID
-        self.services = services
+        self.appointmentServices = services
     }
     
     required init(from decoder: Decoder) throws {
@@ -26,14 +26,19 @@ class Appointment: Codable, Comparable, Identifiable, ObservableObject {
         appointmentDate = formatter.date(from: stringDate) ?? Date()
         doctorID = try container.decode(UUID.self, forKey: .doctorID)
         patientID = try container.decode(UUID.self, forKey: .patientID)
-        services = try container.decode([UUID].self, forKey: .services)
+        appointmentServices = try container.decode([AppointmentService].self, forKey: .services)
     }
     
     let appointmentID: UUID
     @Published var appointmentDate: Date
     @Published var doctorID: UUID
     let patientID: UUID
-    @Published var services: [UUID]
+    private var services = [UUID]()
+    @Published var appointmentServices: [AppointmentService] {
+        didSet {
+            services = appointmentServices.map { $0.serviceID }
+        }
+    }
     
     static func < (lhs: Appointment, rhs: Appointment) -> Bool {
         lhs.appointmentDate.compare(rhs.appointmentDate) == .orderedDescending
@@ -80,26 +85,35 @@ extension Appointment {
         var appointmentDateTo = Calendar.current.date(byAdding: .month, value: 6, to: Date()) ?? Date()
         var doctorID: UUID?
         var patientID: UUID?
-        var services = [UUID]()
+        var services = [AppointmentService]()
     }
     
     convenience init(using appointmentData: AppointmentProperties) {
         self.init(appointmentDate: appointmentData.appointmentDate ?? Date(), doctorID: appointmentData.doctorID ?? UUID(), patientID: appointmentData.patientID ?? UUID(), services: appointmentData.services)
     }
     
-    func updateAppointment(using appointmentData: AppointmentProperties) {
+    func updateAppointment(using appointmentData: AppointmentProperties, currentServices: [Service]) {
         if let unwrappedDate = appointmentData.appointmentDate, let unwrappedDoctorID = appointmentData.doctorID {
             appointmentDate = unwrappedDate
             doctorID = unwrappedDoctorID
         }
-        services = appointmentData.services
+        let updatedAppointmentServices = appointmentData.services.map { appointmentService in
+            if let foundService = currentServices.first(where: { $0.serviceID == appointmentService.serviceID}) {
+                return AppointmentService(
+                    serviceID: appointmentService.serviceID,
+                    name: appointmentService.name,
+                    price: foundService.price)
+            }
+            return appointmentService
+        }
+        appointmentServices = updatedAppointmentServices
     }
     
     var data: AppointmentProperties {
-        AppointmentProperties(appointmentDate: appointmentDate, doctorID: doctorID, patientID: patientID, services: services)
+        AppointmentProperties(appointmentDate: appointmentDate, doctorID: doctorID, patientID: patientID, services: appointmentServices)
     }
     
-    static let example = AppointmentProperties(appointmentDate: Date(), appointmentDateFrom: Date().addingTimeInterval(-400000), appointmentDateTo: Date().addingTimeInterval(40000), doctorID: UUID(), patientID: nil, services: [UUID]())
+    static let example = AppointmentProperties(appointmentDate: Date(), appointmentDateFrom: Date().addingTimeInterval(-400000), appointmentDateTo: Date().addingTimeInterval(40000), doctorID: UUID(), patientID: nil, services: [AppointmentService]())
 }
 
 

@@ -19,7 +19,9 @@ extension UpcomingAppointmentRow {
         }
         
         func getFilteredServices(for appointment: Appointment) -> [Service] {
-            appState.services.services.filter({ appointment.services.contains($0.serviceID) })
+            appState.services.services.filter { service in
+                appointment.appointmentServices.contains { $0.serviceID == service.serviceID }
+            }
         }
         
         func isAppointmentClose(_ appointment: Appointment) -> Bool {

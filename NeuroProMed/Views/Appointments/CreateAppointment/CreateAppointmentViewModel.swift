@@ -49,11 +49,26 @@ extension CreateAppointment {
             notificationSchedule.setNotification(for: appointment, message: message)
             CalendarHelper().add(appointment: appointment, to: selectedCalendar, title: message)
         }
+        
+        func checkForConflict(appointment: Appointment) -> Result<Void, AppError> {
+            let concurrentAppointments = appState.appointments.appointments.filter({ $0.appointmentDate == appointment.appointmentDate })
+            if let concurrentPatientAppointment = concurrentAppointments.first(where: { $0.patientID == appointment.patientID }) {
+                return .failure(AppError.conflictingAppointment("Cannot schedule appointment: It has a conflict with another appointment at the same time."))
+            }
+            if let concurrentDoctorAppointment = concurrentAppointments.first(where: { $0.doctorID == appointment.doctorID }) {
+                return .failure(AppError.conflictingAppointment("Cannot schedule appointment: It has a conflict with another appointment at the same time."))
+            }
+            return .success(Void())
+        }
 
         func createAppointment(using data: Appointment.AppointmentProperties) {
             Task {
                 let generator = UINotificationFeedbackGenerator()
                 let newAppointment = Appointment(using: data)
+                if case .failure(let error) = checkForConflict(appointment: newAppointment) {
+                    error.trigger(with: generator, &isShowingAlert, message: &alertMessage)
+                    return
+                }
                 do {
                     let response = try await newAppointment.create()
                     guard !response.error else {

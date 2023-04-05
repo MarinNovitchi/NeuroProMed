@@ -28,8 +28,8 @@ extension AppointmentView {
             appState.isUserDoctor || appointment.appointmentDate.compare(Date()) == .orderedDescending
         }
         
-        func filteredServices(for appointment: Appointment) -> [Service] {
-            appState.services.services.filter({ appointment.services.contains($0.serviceID) })
+        func filteredServices(for appointment: Appointment) -> [AppointmentService] {
+            appointment.appointmentServices
         }
         
         func isNotificationDisplayed(for appointment: Appointment) -> Bool {

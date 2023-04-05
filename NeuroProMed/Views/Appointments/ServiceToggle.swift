@@ -17,9 +17,9 @@ struct ServiceToggle: View {
     func serviceToggleSet(newValue: Bool) {
         isOn = newValue
         if isOn {
-            appointment.services.append(service.serviceID)
+            appointment.services.append(AppointmentService(serviceID: service.serviceID, name: service.name, price: service.price))
         } else {
-            appointment.services.removeAll(where: { $0 == service.serviceID })
+            appointment.services.removeAll(where: { $0.serviceID == service.serviceID })
         }
     }
     
@@ -36,7 +36,7 @@ struct ServiceToggle: View {
             }
         }
         .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-        .onAppear(perform: { isOn = appointment.services.contains(service.serviceID) })
+        .onAppear(perform: { isOn = appointment.services.contains { $0.serviceID == service.serviceID} })
     }
 }
 

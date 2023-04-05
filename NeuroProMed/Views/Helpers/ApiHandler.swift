@@ -94,7 +94,7 @@ enum HttpRequestType: String {
 /// Network error types
 enum AppError: Error {
     
-    case unknown, badURL, encodingIssue(String), decodingIssue(String), requestFailed, serverError(String)
+    case unknown, badURL, encodingIssue(String), decodingIssue(String), requestFailed, serverError(String), conflictingAppointment(String)
     
     /// Provides a network error message
     /// - Returns: Error message
@@ -112,6 +112,8 @@ enum AppError: Error {
             return message
         case .unknown:
             return NSLocalizedString("unknownError", comment: "Unknown error message")
+        case .conflictingAppointment(let message):
+            return message
         }
     }
     
