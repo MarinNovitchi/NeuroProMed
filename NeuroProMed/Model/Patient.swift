@@ -83,6 +83,10 @@ class Patient: Codable, Comparable, Identifiable, ObservableObject {
         }
     }
     
+    var formattedPhoneNumber: String {
+        phoneNumber ?? NSLocalizedString("unknownPhoneNumber", comment: "Unknown phone number placeholder")
+    }
+    
     var formattedAddress: String {
         address ?? NSLocalizedString("unknownAddress", comment: "Unknown address placeholder")
     }

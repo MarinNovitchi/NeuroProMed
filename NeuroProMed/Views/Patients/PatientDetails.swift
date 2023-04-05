@@ -23,6 +23,7 @@ struct PatientDetails: View {
                 }
             }
             CustomSection(header: Text(label(.personalDetails))) {
+                Text(patient.formattedPhoneNumber)
                 Text(patient.formattedAddress)
                 Text(patient.formattedJob)
             }

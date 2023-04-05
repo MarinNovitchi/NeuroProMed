@@ -22,6 +22,8 @@ struct PatientDetailsSection: View {
             } else {
                 DatePicker(label(.birthDate), selection: $patientData.birthDate, in: ...Date(), displayedComponents: [.date])
             }
+            TextField(label(.phoneNumber), text: $patientData.phoneNumber)
+                .keyboardType(.phonePad)
             TextField(label(.address), text: $patientData.address)
             TextField(label(.job), text: $patientData.job)
         }

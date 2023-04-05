@@ -14,6 +14,7 @@ enum AppLabels: String {
     case bornAfter = "Born after picker label"
     case bornBefore = "Born before picker label"
     case birthDate = "Birth Date picker label"
+    case phoneNumber = "Phone number textfield label"
     case address = "Address textfield label"
     case job = "Job textfield label"
     case patients = "Patients page title"
