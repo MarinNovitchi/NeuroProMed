@@ -9,11 +9,12 @@ import Foundation
 
 class Patient: Codable, Comparable, Identifiable, ObservableObject {
 
-    init(firstName: String, lastName: String, birthDate: Date?, address: String?, job: String?) {
+    init(firstName: String, lastName: String, birthDate: Date?, phoneNumber: String?, address: String?, job: String?) {
         self.patientID = UUID()
         self.firstName = firstName
         self.lastName = lastName
         self.birthDate = birthDate
+        self.phoneNumber = phoneNumber
         self.address = address
         self.job = job
     }
@@ -29,6 +30,7 @@ class Patient: Codable, Comparable, Identifiable, ObservableObject {
         lastName = try container.decode(String?.self, forKey: .lastName) ?? NSLocalizedString("unknownLastName", comment: "Unknown lastName placeholder")
         let stringDate = try container.decode(String?.self, forKey: .birthDate)
         birthDate = formatter.date(from: stringDate ?? "")
+        phoneNumber = try container.decode(String?.self, forKey: .phoneNumber)
         address = try container.decode(String?.self, forKey: .address)
         job = try container.decode(String?.self, forKey: .job)
     }
@@ -37,6 +39,7 @@ class Patient: Codable, Comparable, Identifiable, ObservableObject {
     @Published var firstName: String
     @Published var lastName: String
     @Published var birthDate: Date?
+    @Published var phoneNumber: String?
     @Published var address: String?
     @Published var job: String?
     
@@ -104,12 +107,13 @@ class Patient: Codable, Comparable, Identifiable, ObservableObject {
                 try container.encode(formatter.string(from: unwrappedBirthDate), forKey: .birthDate)
             }
         }
+        try container.encode(phoneNumber?.isEmpty ?? true ? nil : phoneNumber, forKey: .phoneNumber)
         try container.encode(address?.isEmpty ?? true ? nil : address, forKey: .address)
         try container.encode(job?.isEmpty ?? true ? nil : job, forKey: .job)
     }
     
     enum CodingKeys: CodingKey {
-        case patientID, firstName, lastName, birthDate, address, job
+        case patientID, firstName, lastName, phoneNumber, birthDate, address, job
     }
 }
 
@@ -121,27 +125,49 @@ extension Patient {
         var birthDate = Date()
         var birthDateFrom = Calendar.current.date(byAdding: .year, value: -50, to: Date()) ?? Date()
         var birthDateTo = Date()
+        var phoneNumber = ""
         var address = ""
         var job = ""
     }
     
     convenience init(using patientData: PatientProperties) {
-        self.init(firstName: patientData.firstName.capitalizingFirstLetter(), lastName: patientData.lastName.capitalizingFirstLetter(), birthDate: patientData.birthDate, address: patientData.address.isEmpty ? nil : patientData.address, job: patientData.job.isEmpty ? nil : patientData.job )
+        self.init(
+            firstName: patientData.firstName.capitalizingFirstLetter(),
+            lastName: patientData.lastName.capitalizingFirstLetter(),
+            birthDate: patientData.birthDate,
+            phoneNumber: patientData.phoneNumber.isEmpty ? nil : patientData.phoneNumber,
+            address: patientData.address.isEmpty ? nil : patientData.address,
+            job: patientData.job.isEmpty ? nil : patientData.job )
     }
     
     func updatePatient(using patientData: PatientProperties) {
         firstName = patientData.firstName.capitalizingFirstLetter()
         lastName = patientData.lastName.capitalizingFirstLetter()
         birthDate = patientData.birthDate.compare(Date().addingTimeInterval(-5000)) == .orderedAscending ? patientData.birthDate : nil
+        phoneNumber = patientData.phoneNumber.isEmpty ? nil : patientData.phoneNumber
         address = patientData.address.isEmpty ? nil : patientData.address
         job = patientData.job.isEmpty ? nil : patientData.job
     }
     
     var data: PatientProperties {
-        PatientProperties(firstName: firstName, lastName: lastName, birthDate: birthDate ?? Date(), address: address ?? "", job: job ?? "")
+        PatientProperties(
+            firstName: firstName,
+            lastName: lastName,
+            birthDate: birthDate ?? Date(),
+            phoneNumber: phoneNumber ?? "",
+            address: address ?? "",
+            job: job ?? "")
     }
     
-    static let example = PatientProperties(firstName: "FirstName", lastName: "LastName", birthDate: Date().addingTimeInterval(-3000000), birthDateFrom: Date(), birthDateTo: Date(), address: "ExampleAddress", job: "ExampleJob")
+    static let example = PatientProperties(
+        firstName: "FirstName",
+        lastName: "LastName",
+        birthDate: Date().addingTimeInterval(-3000000),
+        birthDateFrom: Date(),
+        birthDateTo: Date(),
+        phoneNumber: "072245641",
+        address: "ExampleAddress",
+        job: "ExampleJob")
 }
 
 
