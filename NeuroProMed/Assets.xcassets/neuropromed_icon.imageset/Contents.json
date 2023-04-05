@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "neuropromed_icon_transparent.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "neuropromed_icon_transparent.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
