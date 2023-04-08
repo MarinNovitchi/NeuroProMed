@@ -172,7 +172,7 @@
 		A855CDA82649010400726E6F /* CalendarHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHelper.swift; sourceTree = "<group>"; };
 		A855CDAA265175D000726E6F /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		A855CDAC2652ED4800726E6F /* EditDoctor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDoctor.swift; sourceTree = "<group>"; };
-		A855CDB22654288300726E6F /* NeuroProMedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeuroProMedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A855CDB22654288300726E6F /* NeuropromedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NeuropromedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A855CDB62654288300726E6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A855CDBC2656B46000726E6F /* HolidaySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HolidaySection.swift; sourceTree = "<group>"; };
 		A855CDBE26596FF100726E6F /* BiometricsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsSettingsView.swift; sourceTree = "<group>"; };
@@ -209,7 +209,7 @@
 		A8E01849268289D900EAE9BA /* npm_appointment.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = npm_appointment.PNG; sourceTree = "<group>"; };
 		A8E0184A268289D900EAE9BA /* npm_filter_patients.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = npm_filter_patients.PNG; sourceTree = "<group>"; };
 		A8E0184B268289D900EAE9BA /* npm_login.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = npm_login.PNG; sourceTree = "<group>"; };
-		A8F74C3E2605DA3E006722BB /* NeuroProMed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeuroProMed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8F74C3E2605DA3E006722BB /* Neuropromed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Neuropromed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8F74C412605DA3E006722BB /* NeuroProMedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeuroProMedApp.swift; sourceTree = "<group>"; };
 		A8F74C432605DA3E006722BB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A8F74C452605DA3F006722BB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -593,8 +593,8 @@
 		A8F74C3F2605DA3E006722BB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A8F74C3E2605DA3E006722BB /* NeuroProMed.app */,
-				A855CDB22654288300726E6F /* NeuroProMedTests.xctest */,
+				A8F74C3E2605DA3E006722BB /* Neuropromed.app */,
+				A855CDB22654288300726E6F /* NeuropromedTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -626,9 +626,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A855CDB12654288300726E6F /* NeuroProMedTests */ = {
+		A855CDB12654288300726E6F /* NeuropromedTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A855CDB92654288300726E6F /* Build configuration list for PBXNativeTarget "NeuroProMedTests" */;
+			buildConfigurationList = A855CDB92654288300726E6F /* Build configuration list for PBXNativeTarget "NeuropromedTests" */;
 			buildPhases = (
 				A855CDAE2654288300726E6F /* Sources */,
 				A855CDAF2654288300726E6F /* Frameworks */,
@@ -639,14 +639,14 @@
 			dependencies = (
 				A855CDB82654288300726E6F /* PBXTargetDependency */,
 			);
-			name = NeuroProMedTests;
+			name = NeuropromedTests;
 			productName = NeuroProMedTests;
-			productReference = A855CDB22654288300726E6F /* NeuroProMedTests.xctest */;
+			productReference = A855CDB22654288300726E6F /* NeuropromedTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		A8F74C3D2605DA3E006722BB /* NeuroProMed */ = {
+		A8F74C3D2605DA3E006722BB /* Neuropromed */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A8F74C4D2605DA3F006722BB /* Build configuration list for PBXNativeTarget "NeuroProMed" */;
+			buildConfigurationList = A8F74C4D2605DA3F006722BB /* Build configuration list for PBXNativeTarget "Neuropromed" */;
 			buildPhases = (
 				A8F74C3A2605DA3E006722BB /* Sources */,
 				A8F74C3B2605DA3E006722BB /* Frameworks */,
@@ -656,9 +656,9 @@
 			);
 			dependencies = (
 			);
-			name = NeuroProMed;
+			name = Neuropromed;
 			productName = NeuroProMed;
-			productReference = A8F74C3E2605DA3E006722BB /* NeuroProMed.app */;
+			productReference = A8F74C3E2605DA3E006722BB /* Neuropromed.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -679,7 +679,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A8F74C392605DA3E006722BB /* Build configuration list for PBXProject "NeuroProMed" */;
+			buildConfigurationList = A8F74C392605DA3E006722BB /* Build configuration list for PBXProject "Neuropromed" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -697,8 +697,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A8F74C3D2605DA3E006722BB /* NeuroProMed */,
-				A855CDB12654288300726E6F /* NeuroProMedTests */,
+				A8F74C3D2605DA3E006722BB /* Neuropromed */,
+				A855CDB12654288300726E6F /* NeuropromedTests */,
 			);
 		};
 /* End PBXProject section */
@@ -836,7 +836,7 @@
 /* Begin PBXTargetDependency section */
 		A855CDB82654288300726E6F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A8F74C3D2605DA3E006722BB /* NeuroProMed */;
+			target = A8F74C3D2605DA3E006722BB /* Neuropromed */;
 			targetProxy = A855CDB72654288300726E6F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -874,7 +874,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NeuroProMed.app/NeuroProMed";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neuropromed.app/Neuropromed";
 			};
 			name = Debug;
 		};
@@ -894,7 +894,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NeuroProMed.app/NeuroProMed";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Neuropromed.app/Neuropromed";
 			};
 			name = Release;
 		};
@@ -1075,7 +1075,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A855CDB92654288300726E6F /* Build configuration list for PBXNativeTarget "NeuroProMedTests" */ = {
+		A855CDB92654288300726E6F /* Build configuration list for PBXNativeTarget "NeuropromedTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A855CDBA2654288300726E6F /* Debug */,
@@ -1084,7 +1084,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A8F74C392605DA3E006722BB /* Build configuration list for PBXProject "NeuroProMed" */ = {
+		A8F74C392605DA3E006722BB /* Build configuration list for PBXProject "Neuropromed" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A8F74C4B2605DA3F006722BB /* Debug */,
@@ -1093,7 +1093,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A8F74C4D2605DA3F006722BB /* Build configuration list for PBXNativeTarget "NeuroProMed" */ = {
+		A8F74C4D2605DA3F006722BB /* Build configuration list for PBXNativeTarget "Neuropromed" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A8F74C4E2605DA3F006722BB /* Debug */,

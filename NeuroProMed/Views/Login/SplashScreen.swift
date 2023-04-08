@@ -24,7 +24,7 @@ struct SplashScreen: View {
     var body: some View {
         Group {
             Spacer()
-            Text("NeuroProMed")
+            Text("Neuropromed")
                 .font(.largeTitle)
                 .fontWeight(.medium)
                 .gradientForeground(
