@@ -56,7 +56,7 @@ struct ProfileView: View {
                             patient: viewModel.patient,
                             appState: .shared,
                             patientData: $viewModel.patientData,
-                            showBiometrics: true)
+                            showExtraSettings: true)
                     }
                 }
             }

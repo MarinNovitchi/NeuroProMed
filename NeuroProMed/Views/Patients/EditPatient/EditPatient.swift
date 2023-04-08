@@ -15,19 +15,20 @@ struct EditPatient: View {
     @ObservedObject var appState: AppState
     
     @Binding var patientData: Patient.PatientProperties
-    let showBiometrics: Bool
+    let showExtraSettings: Bool
     
     var body: some View {
         Form {
             PatientDetailsSection(patientData: $patientData, isUsedByFilter: false)
-            if showBiometrics {
+            if showExtraSettings {
                 BiometricsSettingsView(useBiometrics: $viewModel.temporaryBiometricsSettings)
+                PatientDeleteButton(viewModel: .init(), patient: patient, appState: appState)
             }
         }
         .navigationTitle(label(.editPatient))
         .navigationBarItems(
             leading: Button(label(.cancel)) { dismiss() },
-            trailing: Button(label(.save)) { viewModel.save(patientData, to: patient, showBiometrics: showBiometrics) }
+            trailing: Button(label(.save)) { viewModel.save(patientData, to: patient, showBiometrics: showExtraSettings) }
                 .disabled(patientData.firstName.isEmpty || patientData.lastName.isEmpty)
         )
         .onReceive(viewModel.dismissView) { isDismissed in
@@ -49,7 +50,7 @@ struct EditPatient_Previews: PreviewProvider {
             patient: Patient(using: Patient.example),
             appState: .shared,
             patientData: .constant(Patient.example),
-            showBiometrics: true
+            showExtraSettings: true
         )
     }
 }

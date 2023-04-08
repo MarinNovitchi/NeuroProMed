@@ -42,7 +42,7 @@ struct PatientView: View {
                         patient: patient,
                         appState: .shared,
                         patientData: $viewModel.patientData,
-                        showBiometrics: false
+                        showExtraSettings: false
                     )
                 case .createAppointmentSheet:
                     CreateAppointment(

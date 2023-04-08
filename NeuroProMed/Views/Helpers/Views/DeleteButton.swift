@@ -21,7 +21,7 @@ struct DeleteButton: View {
     var body: some View {
         Section {
             ListButton(title: title, action: triggerWarning)
-            .foregroundColor(Color.red)
+                .foregroundColor(Color.red)
         }
     }
 }
